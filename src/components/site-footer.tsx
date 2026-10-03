@@ -1,6 +1,36 @@
 import { Link } from "@tanstack/react-router";
+import { Instagram, Linkedin, Youtube, type LucideIcon } from "lucide-react";
+import type { SVGProps } from "react";
 import { Logo } from "@/components/logo";
 import { nav, site, social } from "@/lib/site-data";
+
+/** X (Twitter) mark, drawn in the same 24px / 2px-stroke style as Lucide icons. */
+function XIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
+      <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+    </svg>
+  );
+}
+
+type IconType = LucideIcon | ((props: SVGProps<SVGSVGElement>) => React.JSX.Element);
+
+const socialIcons: Record<string, IconType> = {
+  Instagram,
+  LinkedIn: Linkedin,
+  X: XIcon,
+  YouTube: Youtube,
+};
 
 const groups = [
   {
@@ -63,19 +93,28 @@ export function SiteFooter() {
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-teal">
               Follow
             </p>
-            <ul className="mt-4 flex flex-wrap gap-2">
-              {social.map((s) => (
-                <li key={s.label}>
-                  <a
-                    href={s.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex h-10 items-center rounded-full bg-snow/8 px-3.5 text-sm text-snow/80 transition-[background-color,color] duration-150 hover:bg-snow/16 hover:text-snow"
-                  >
-                    {s.label}
-                  </a>
-                </li>
-              ))}
+            <ul className="mt-4 flex flex-wrap gap-3">
+              {social.map((s) => {
+                const Icon = socialIcons[s.label];
+                return (
+                  <li key={s.label}>
+                    <a
+                      href={s.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`${s.label} (opens in a new tab)`}
+                      title={s.label}
+                      className="group inline-flex size-11 items-center justify-center rounded-full border border-snow/15 bg-snow/5 text-snow/80 transition-[background-color,color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-teal hover:bg-teal hover:text-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
+                    >
+                      {Icon ? (
+                        <Icon className="size-5" aria-hidden="true" />
+                      ) : (
+                        <span className="text-xs font-semibold">{s.label[0]}</span>
+                      )}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
             <p className="mt-8 text-xs leading-relaxed text-snow/50">
               {site.legalName}
