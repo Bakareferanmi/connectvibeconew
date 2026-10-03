@@ -1,0 +1,1 @@
+import{A as e,L as t}from"./react-CMd6qeV8.js";var n=t();function r({src:t,alt:r,className:i,framed:a=!0}){return(0,n.jsx)(`img`,{src:t,alt:r,className:e(`object-cover`,a&&`media-frame`,i)})}export{r as t};
