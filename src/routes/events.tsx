@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/events")({
   component: EventsPage,
-  head: () => ({ meta: [{ title: "Events — connectvibeco" }] }),
+  head: () => ({ meta: [{ title: "Events | connectvibeco" }] }),
 });
 
 function EventsPage() {
@@ -44,7 +44,7 @@ function EventsPage() {
       <PageHero
         kicker="Events"
         title="A calendar you can actually use."
-        lede="Workshops, training, fundraising, conferences, project launches — and the days we look back on."
+        lede="Workshops, training, fundraising, conferences, project launches, and the days we look back on."
         image="/images/greenway.jpg"
         imageAlt="A greenway path through restored parkland"
         compact
@@ -115,7 +115,7 @@ function EventsPage() {
         <Reveal>
           <Kicker>Past events</Kicker>
           <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-deep">
-            Days that already happened — with pictures.
+            Days that already happened, with pictures.
           </h2>
         </Reveal>
         <div className="mt-10 grid gap-6 lg:grid-cols-3">

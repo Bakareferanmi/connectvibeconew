@@ -28,7 +28,7 @@ import {
 export const Route = createFileRoute("/")({
   component: Home,
   head: () => ({
-    meta: [{ title: "connectvibeco — Building what communities need" }],
+    meta: [{ title: "connectvibeco | Building what communities need" }],
   }),
 });
 
@@ -261,7 +261,7 @@ function Home() {
             </h2>
             <p className="mt-5 text-base leading-relaxed text-muted">
               Programmes, volunteering, youth, women, skills and local enterprise. The building is
-              never the whole story — the people who will run it write the brief.
+              never the whole story; the people who will run it write the brief.
             </p>
             <ul className="mt-6 flex flex-wrap gap-2">
               {["Community programmes", "Volunteering", "Youth", "Women", "Skills", "Local enterprise"].map(
@@ -339,7 +339,7 @@ function Home() {
             </h2>
             <p className="mt-4 text-snow/75">
               Engineering · Project management · Community · and more. Paid roles, apprenticeships
-              and volunteering — all of it real work.
+              and volunteering, all of it real work.
             </p>
             <Button asChild variant="onDarkSolid" className="mt-8">
               <Link to="/careers">

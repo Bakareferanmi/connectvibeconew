@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/projects")({
   component: ProjectsPage,
-  head: () => ({ meta: [{ title: "Projects — connectvibeco" }] }),
+  head: () => ({ meta: [{ title: "Projects | connectvibeco" }] }),
 });
 
 const statusLabel: Record<ProjectStatus, string> = {
@@ -24,7 +24,7 @@ function ProjectsPage() {
       <PageHero
         kicker="Projects"
         title="From ideas to places people can use."
-        lede="Retrofit, civic buildings, green infrastructure and neighbourhoods still on the drawing board — all of them specified with the people who will live there."
+        lede="Retrofit, civic buildings, green infrastructure and neighbourhoods still on the drawing board, all of them specified with the people who will live there."
         image="/images/housing.jpg"
         imageAlt="Climate-resilient community housing with timber cladding and rain gardens"
         compact

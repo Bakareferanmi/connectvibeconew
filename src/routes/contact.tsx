@@ -14,7 +14,7 @@ export const Route = createFileRoute("/contact")({
   validateSearch: (search: Record<string, unknown>): ContactSearch => ({
     intent: typeof search.intent === "string" ? search.intent : undefined,
   }),
-  head: () => ({ meta: [{ title: "Contact — connectvibeco" }] }),
+  head: () => ({ meta: [{ title: "Contact | connectvibeco" }] }),
 });
 
 function ContactPage() {

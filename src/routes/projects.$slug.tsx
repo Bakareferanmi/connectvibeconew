@@ -16,7 +16,7 @@ export const Route = createFileRoute("/projects/$slug")({
     return { project };
   },
   head: ({ loaderData }) => ({
-    meta: [{ title: `${loaderData?.project.title ?? "Project"} — connectvibeco` }],
+    meta: [{ title: `${loaderData?.project.title ?? "Project"} | connectvibeco` }],
   }),
 });
 

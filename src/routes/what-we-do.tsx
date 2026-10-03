@@ -11,7 +11,7 @@ import { pillars } from "@/lib/site-data";
 
 export const Route = createFileRoute("/what-we-do")({
   component: WhatWeDoPage,
-  head: () => ({ meta: [{ title: "What we do — connectvibeco" }] }),
+  head: () => ({ meta: [{ title: "What we do | connectvibeco" }] }),
 });
 
 function WhatWeDoPage() {
@@ -71,7 +71,7 @@ function WhatWeDoPage() {
         <ol className="mx-auto mt-12 grid max-w-4xl gap-4 sm:grid-cols-2">
           {[
             { n: "01", t: "Listen", d: "Resident workshops, data, and a walk of the street." },
-            { n: "02", t: "Specify", d: "A brief the community can defend — cost, carbon, jobs." },
+            { n: "02", t: "Specify", d: "A brief the community can defend, cost, carbon, jobs." },
             { n: "03", t: "Deliver", d: "Local labour, trainees on site, neighbours as clients." },
             { n: "04", t: "Belong", d: "Ownership, maintenance, and skills that stay when we leave." },
           ].map((s) => (

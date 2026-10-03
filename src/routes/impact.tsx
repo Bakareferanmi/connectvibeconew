@@ -10,7 +10,7 @@ import { projects, stats } from "@/lib/site-data";
 
 export const Route = createFileRoute("/impact")({
   component: ImpactPage,
-  head: () => ({ meta: [{ title: "Impact — connectvibeco" }] }),
+  head: () => ({ meta: [{ title: "Impact | connectvibeco" }] }),
 });
 
 const measures = [
@@ -38,7 +38,7 @@ function ImpactPage() {
       <PageHero
         kicker="Impact"
         title="Impact that can be seen."
-        lede="Communities reached, projects delivered, people engaged, social value created — counted in public."
+        lede="Communities reached, projects delivered, people engaged, social value created, counted in public."
         image="/images/aerial.jpg"
         imageAlt="Aerial view of a neighbourhood with rooftop solar"
         compact
@@ -96,16 +96,16 @@ function ImpactPage() {
             </h2>
             <ul className="mt-6 space-y-4 text-sm leading-relaxed text-muted">
               <li>
-                <span className="font-medium text-deep">Riverside Retrofit</span> — 42 homes in
+                <span className="font-medium text-deep">Riverside Retrofit</span>: 42 homes in
                 delivery, 12 technician apprentices, a community energy vehicle ready for first
                 generation.
               </li>
               <li>
-                <span className="font-medium text-deep">Oak Hub</span> — brief written in six
+                <span className="font-medium text-deep">Oak Hub</span>: brief written in six
                 resident workshops; community land trust in place for ownership.
               </li>
               <li>
-                <span className="font-medium text-deep">North Greenway</span> — rain gardens held a
+                <span className="font-medium text-deep">North Greenway</span>: rain gardens held a
                 1-in-30 storm; the school field stayed dry.
               </li>
             </ul>

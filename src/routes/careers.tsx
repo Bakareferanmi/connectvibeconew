@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/careers")({
   component: CareersPage,
-  head: () => ({ meta: [{ title: "Careers — connectvibeco" }] }),
+  head: () => ({ meta: [{ title: "Careers | connectvibeco" }] }),
 });
 
 const groups: { id: JobKind | "all"; label: string }[] = [

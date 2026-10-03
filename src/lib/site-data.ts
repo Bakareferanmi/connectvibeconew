@@ -32,7 +32,7 @@ export const approach = [
   {
     key: "Build",
     title: "Build",
-    text: "Sustainable infrastructure and retrofit that communities can actually use — low-carbon, climate-resilient, built to last.",
+    text: "Sustainable infrastructure and retrofit that communities can actually use, low-carbon, climate-resilient, built to last.",
   },
   {
     key: "Connect",
@@ -42,7 +42,7 @@ export const approach = [
   {
     key: "Empower",
     title: "Empower",
-    text: "Skills, employment and enterprise so infrastructure creates livelihoods — not just buildings.",
+    text: "Skills, employment and enterprise so infrastructure creates livelihoods, not just buildings.",
   },
   {
     key: "Sustain",
@@ -73,7 +73,7 @@ export const pillars = [
     kicker: "02",
     summary:
       "Schools, clinics, water, sanitation, public spaces and community facilities.",
-    body: "Places people gather, learn, heal and play. We work with residents to specify, fund and deliver assets that stay in community hands — halls, hubs, gardens, sports and care spaces.",
+    body: "Places people gather, learn, heal and play. We work with residents to specify, fund and deliver assets that stay in community hands, halls, hubs, gardens, sports and care spaces.",
     image: "/images/housing.jpg",
     points: [
       "Community hubs and halls",
@@ -145,7 +145,7 @@ export const projects: Project[] = [
     status: "live",
     theme: "Sustainable retrofit",
     summary:
-      "A street-scale deep retrofit of 42 homes — warmer rooms, lower bills, and a skills academy on the doorstep.",
+      "A street-scale deep retrofit of 42 homes, warmer rooms, lower bills, and a skills academy on the doorstep.",
     body: "Working with residents and the local authority, we are delivering fabric-first upgrades, heat-pump ready systems, solar where roofs allow, and a street that finally feels looked-after. Every trade package includes an apprenticeship seat. The community energy group will own the generation assets.",
     image: "/images/retrofit.jpg",
     outcomes: [
@@ -164,7 +164,7 @@ export const projects: Project[] = [
     status: "delivery",
     theme: "Community infrastructure",
     summary:
-      "A timber-and-brick hub with clinic rooms, a hall, kitchen and courtyard — designed with the people who will run it.",
+      "A timber-and-brick hub with clinic rooms, a hall, kitchen and courtyard, designed with the people who will run it.",
     body: "Oak replaces a condemned prefab with a civic building that can host health clinics, youth sessions, worship, enterprise and a weekday café. The brief was written in six resident workshops. The asset will be held by a community land trust.",
     image: "/images/community-centre.jpg",
     outcomes: [
@@ -202,7 +202,7 @@ export const projects: Project[] = [
     status: "coming",
     theme: "Future projects",
     summary:
-      "A mixed-tenure, low-carbon neighbourhood on a former mill — homes, workspace and a public dock garden.",
+      "A mixed-tenure, low-carbon neighbourhood on a former mill, homes, workspace and a public dock garden.",
     body: "Mill Quarter is in co-design. We are assembling land, community shares and public partners for a neighbourhood that keeps the mill's brick bones, adds timber upper floors, and opens the dock as a public garden. Homes will be genuinely affordable. Workspace is reserved for local makers and care enterprises.",
     image: "/images/housing.jpg",
     outcomes: [
@@ -211,7 +211,7 @@ export const projects: Project[] = [
       "Mixed tenure, mixed use",
       "Dock garden as public realm",
     ],
-    year: "2027—",
+    year: "From 2027",
   },
 ];
 
@@ -248,7 +248,7 @@ export const events: SiteEvent[] = [
     city: "Birmingham",
     summary:
       "A one-day taster covering retrofit basics, site safety and how to apply for our technician pathway.",
-    body: "Whether you are changing career or supporting a young person, this open training day is the front door to paid pathways on our live sites. Lunch provided. No prior experience required. Bring boots if you have them — we have spares if not.",
+    body: "Whether you are changing career or supporting a young person, this open training day is the front door to paid pathways on our live sites. Lunch provided. No prior experience required. Bring boots if you have them, we have spares if not.",
     image: "/images/skills.jpg",
   },
   {
@@ -271,7 +271,7 @@ export const events: SiteEvent[] = [
     place: "North Greenway Pavilion",
     city: "Manchester",
     summary:
-      "A weekend lab for 18–25 year olds mapping heat, flood and missing places — then pitching what to build next.",
+      "A weekend lab for 18–25 year olds mapping heat, flood and missing places, then pitching what to build next.",
     body: "Two days of mapping, making and pitching. Mentors from design, engineering and community organising. The strongest ideas feed our 2027 pipeline. Travel bursaries available.",
     image: "/images/greenway.jpg",
   },
@@ -342,7 +342,7 @@ export const events: SiteEvent[] = [
     title: "Solar School Switch-on",
     kind: "launch",
     date: "2026-05-21",
-    place: "Parkside Primary roof — community array",
+    place: "Parkside Primary roof, community array",
     city: "Cardiff",
     summary: "A community-owned array went live on a school roof.",
     body: "The first kilowatt-hour was celebrated with juice and a very serious ribbon. Generation now funds a breakfast club.",
@@ -375,7 +375,7 @@ export const communityProgrammes = [
   },
   {
     title: "Skills on site",
-    text: "Every live project carries a training shed — retrofit, joinery, planting, digital and site safety.",
+    text: "Every live project carries a training shed, retrofit, joinery, planting, digital and site safety.",
     image: "/images/engineer.jpg",
   },
   {
@@ -392,7 +392,7 @@ export const volunteerRoles = [
   },
   {
     title: "Garden stewards",
-    text: "Planting days on greenways and rain gardens. No expertise required — we teach.",
+    text: "Planting days on greenways and rain gardens. No expertise required, we teach.",
   },
   {
     title: "Skills mentors",
@@ -420,7 +420,7 @@ export const stories = [
     place: "Birmingham",
     date: "July 2026",
     excerpt:
-      "Jordan had been out of work eleven months. He is now setting out timber on Oak Hub — and teaching the next intake.",
+      "Jordan had been out of work eleven months. He is now setting out timber on Oak Hub, and teaching the next intake.",
     image: "/images/skills.jpg",
   },
   {
@@ -451,7 +451,7 @@ export type Job = {
 export const jobs: Job[] = [
   {
     slug: "project-manager-infrastructure",
-    title: "Project Manager — Infrastructure",
+    title: "Project Manager, Infrastructure",
     kind: "employed",
     location: "Leeds / hybrid",
     type: "Full-time",
@@ -531,7 +531,7 @@ export const jobs: Job[] = [
   },
   {
     slug: "garden-steward-volunteer",
-    title: "Garden Steward — Volunteer",
+    title: "Garden Steward (Volunteer)",
     kind: "volunteer",
     location: "Manchester, Leeds, Birmingham",
     type: "Flexible",
@@ -540,7 +540,7 @@ export const jobs: Job[] = [
     summary:
       "Monthly planting and care days on greenways and rain gardens. Come for a morning; stay for the flask of tea.",
     points: [
-      "Any fitness level — roles are mixed",
+      "Any fitness level, roles are mixed",
       "Under-18s with an accompanying adult",
       "Tools and gloves on us",
     ],

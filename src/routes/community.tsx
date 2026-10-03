@@ -10,7 +10,7 @@ import { communityProgrammes, stories, volunteerRoles } from "@/lib/site-data";
 
 export const Route = createFileRoute("/community")({
   component: CommunityPage,
-  head: () => ({ meta: [{ title: "Community — connectvibeco" }] }),
+  head: () => ({ meta: [{ title: "Community | connectvibeco" }] }),
 });
 
 function CommunityPage() {
@@ -41,7 +41,7 @@ function CommunityPage() {
         <Reveal>
           <Kicker>Programmes</Kicker>
           <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-[-0.03em] text-deep sm:text-4xl">
-            People places prosperity — in that order.
+            People places prosperity, in that order.
           </h2>
         </Reveal>
         <div className="mt-10 grid gap-4 md:grid-cols-2">

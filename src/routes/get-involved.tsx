@@ -10,7 +10,7 @@ import { volunteerRoles } from "@/lib/site-data";
 
 export const Route = createFileRoute("/get-involved")({
   component: GetInvolvedPage,
-  head: () => ({ meta: [{ title: "Get involved — connectvibeco" }] }),
+  head: () => ({ meta: [{ title: "Get involved | connectvibeco" }] }),
 });
 
 const doors = [
@@ -118,7 +118,7 @@ function GetInvolvedPage() {
       </Section>
 
       <CtaBand
-        title="If you’re not sure which door — pick general."
+        title="If you’re not sure which door, pick general."
         text="We’ll route you. Better a conversation than a perfect form."
         primary={{ label: "Contact us", href: "/contact" }}
         secondary={null}

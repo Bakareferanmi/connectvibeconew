@@ -9,7 +9,7 @@ import { approach, site } from "@/lib/site-data";
 
 export const Route = createFileRoute("/about")({
   component: AboutPage,
-  head: () => ({ meta: [{ title: "About — connectvibeco" }] }),
+  head: () => ({ meta: [{ title: "About | connectvibeco" }] }),
 });
 
 const values = [
@@ -36,7 +36,7 @@ function AboutPage() {
     <main>
       <PageHero
         kicker="About the trust"
-        title="A charity that builds — and stays."
+        title="A charity that builds, and stays."
         lede={`${site.legalName}. We connect people, ideas and resources so infrastructure becomes opportunity.`}
         image="/images/community-centre.jpg"
         imageAlt="A timber and brick community building with a civic square"
@@ -59,7 +59,7 @@ function AboutPage() {
           <Reveal delay={0.08} className="lg:col-span-7 space-y-5 text-base leading-relaxed text-muted">
             <p>
               Too many places get a building and lose the plot. We were set up so communities can
-              specify, deliver and then own the civic infrastructure they need — homes that hold
+              specify, deliver and then own the civic infrastructure they need, homes that hold
               heat, streets that hold water, rooms that hold people.
             </p>
             <p>
@@ -79,7 +79,7 @@ function AboutPage() {
         <Reveal>
           <Kicker>How we work</Kicker>
           <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-[-0.03em] text-deep sm:text-4xl">
-            Connect · Build · Empower — then hand it over.
+            Connect · Build · Empower, then hand it over.
           </h2>
         </Reveal>
         <Stagger className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -109,7 +109,7 @@ function AboutPage() {
             <p className="mt-4 leading-relaxed text-muted">
               The trust is governed by incorporated trustees. We report as a charity in England and
               Wales, publish impact in plain language, and treat social value as a design
-              requirement — not a paragraph in a tender.
+              requirement, not a paragraph in a tender.
             </p>
             <dl className="mt-8 grid gap-4 sm:grid-cols-2">
               <div className="rounded-2xl bg-snow p-5 shadow-[var(--shadow-border)]">
@@ -149,7 +149,7 @@ function AboutPage() {
       <CtaBand
         kicker="Work with us"
         title="Bring a brief. Or a street."
-        text="Authorities, community groups, funders and neighbours — if you have a place that needs to work harder, start here."
+        text="Authorities, community groups, funders and neighbours, if you have a place that needs to work harder, start here."
       />
     </main>
   );
