@@ -33,91 +33,102 @@ export function SiteHeader() {
     };
   }, [open]);
 
-  const solid = scrolled || open;
+  // Light bar only when scrolled AND menu is closed. While the menu is open the header goes dark.
+  const solid = scrolled && !open;
 
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-300",
-        solid
-          ? "bg-snow/90 shadow-[0_1px_0_rgba(11,27,51,0.06)] backdrop-blur-md"
-          : "bg-gradient-to-b from-navy/80 via-navy/35 to-transparent",
-      )}
-    >
-      <div className="mx-auto flex h-[4.5rem] max-w-[88rem] items-center justify-between gap-4 px-4 sm:px-6 lg:h-20 lg:px-8">
-        <Link to="/" className="relative z-10 shrink-0" aria-label="connectvibeco home">
-          <Logo onDark={!solid} markClassName="size-9 lg:size-10" />
-        </Link>
+    <>
+      <header
+        className={cn(
+          "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-300",
+          open
+            ? "bg-deep"
+            : solid
+              ? "bg-snow/90 shadow-[0_1px_0_rgba(11,27,51,0.06)] backdrop-blur-md"
+              : "bg-gradient-to-b from-navy/80 via-navy/35 to-transparent",
+        )}
+      >
+        <div className="mx-auto flex h-[4.5rem] max-w-[88rem] items-center justify-between gap-4 px-4 sm:px-6 lg:h-20 lg:px-8">
+          <Link
+            to="/"
+            className="relative z-10 shrink-0"
+            aria-label="connectvibeco home"
+            onClick={() => setOpen(false)}
+          >
+            <Logo onDark={!solid} markClassName="size-9 lg:size-10" />
+          </Link>
 
-        <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Primary">
-          {nav.map((item) => {
-            const active =
-              pathname === item.href || pathname.startsWith(`${item.href}/`);
-            return (
-              <Link
-                key={item.href}
-                to={item.href}
-                className={cn(
-                  "rounded-full px-3 py-2 text-[0.8125rem] font-medium tracking-tight transition-[color,background-color] duration-200",
-                  solid
-                    ? active
-                      ? "bg-foam text-deep"
-                      : "text-deep/75 hover:bg-foam hover:text-deep"
-                    : active
-                      ? "bg-snow/12 text-snow"
-                      : "text-snow/80 hover:bg-snow/10 hover:text-snow",
-                )}
-              >
-                {item.label}
+          <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Primary">
+            {nav.map((item) => {
+              const active =
+                pathname === item.href || pathname.startsWith(`${item.href}/`);
+              return (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  className={cn(
+                    "rounded-full px-3 py-2 text-[0.8125rem] font-medium tracking-tight transition-[color,background-color] duration-200",
+                    solid
+                      ? active
+                        ? "bg-foam text-deep"
+                        : "text-deep/75 hover:bg-foam hover:text-deep"
+                      : active
+                        ? "bg-snow/12 text-snow"
+                        : "text-snow/80 hover:bg-snow/10 hover:text-snow",
+                  )}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <Button
+              asChild
+              size="sm"
+              variant={solid ? "primary" : "onDarkSolid"}
+              className="hidden sm:inline-flex"
+            >
+              <Link to="/get-involved">
+                Get involved
+                <ArrowUpRight className="size-4" />
               </Link>
-            );
-          })}
-        </nav>
-
-        <div className="flex items-center gap-2">
-          <Button
-            asChild
-            size="sm"
-            variant={solid ? "primary" : "onDarkSolid"}
-            className="hidden sm:inline-flex"
-          >
-            <Link to="/get-involved">
-              Get involved
-              <ArrowUpRight className="size-4" />
-            </Link>
-          </Button>
-          <button
-            type="button"
-            className={cn(
-              "relative z-10 inline-flex size-11 items-center justify-center rounded-full xl:hidden",
-              solid ? "text-deep hover:bg-foam" : "text-snow hover:bg-snow/10",
-            )}
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
-          >
-            <span className="relative size-5">
-              <span
-                className={cn(
-                  "absolute inset-0 flex items-center justify-center transition-[opacity,filter,scale] duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
-                  open ? "scale-100 opacity-100 blur-none" : "scale-[0.25] opacity-0 blur-[4px]",
-                )}
-              >
-                <X className="size-5" />
+            </Button>
+            <button
+              type="button"
+              className={cn(
+                "relative z-10 inline-flex size-11 items-center justify-center rounded-full xl:hidden",
+                solid ? "text-deep hover:bg-foam" : "text-snow hover:bg-snow/10",
+              )}
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              onClick={() => setOpen((v) => !v)}
+            >
+              <span className="relative size-5">
+                <span
+                  className={cn(
+                    "absolute inset-0 flex items-center justify-center transition-[opacity,filter,scale] duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
+                    open ? "scale-100 opacity-100 blur-none" : "scale-[0.25] opacity-0 blur-[4px]",
+                  )}
+                >
+                  <X className="size-5" />
+                </span>
+                <span
+                  className={cn(
+                    "absolute inset-0 flex items-center justify-center transition-[opacity,filter,scale] duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
+                    open ? "scale-[0.25] opacity-0 blur-[4px]" : "scale-100 opacity-100 blur-none",
+                  )}
+                >
+                  <Menu className="size-5" />
+                </span>
               </span>
-              <span
-                className={cn(
-                  "absolute inset-0 flex items-center justify-center transition-[opacity,filter,scale] duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
-                  open ? "scale-[0.25] opacity-0 blur-[4px]" : "scale-100 opacity-100 blur-none",
-                )}
-              >
-                <Menu className="size-5" />
-              </span>
-            </span>
-          </button>
+            </button>
+          </div>
         </div>
-      </div>
+      </header>
 
+      {/* Overlay lives OUTSIDE <header> so backdrop-blur can't trap it inside the header bar */}
       <AnimatePresence>
         {open ? (
           <motion.div
@@ -128,7 +139,10 @@ export function SiteHeader() {
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="flex h-dvh flex-col px-6 pb-10 pt-24">
-              <nav className="flex flex-1 flex-col gap-1 overflow-y-auto">
+              <nav
+                className="flex flex-1 flex-col gap-1 overflow-y-auto"
+                aria-label="Mobile"
+              >
                 {nav.map((item, i) => (
                   <motion.div
                     key={item.href}
@@ -138,6 +152,7 @@ export function SiteHeader() {
                   >
                     <Link
                       to={item.href}
+                      onClick={() => setOpen(false)}
                       className="block py-3 text-3xl font-semibold tracking-tight text-snow"
                     >
                       {item.label}
@@ -146,12 +161,14 @@ export function SiteHeader() {
                 ))}
               </nav>
               <Button asChild variant="onDarkSolid" size="lg" className="w-full">
-                <Link to="/get-involved">Get involved</Link>
+                <Link to="/get-involved" onClick={() => setOpen(false)}>
+                  Get involved
+                </Link>
               </Button>
             </div>
           </motion.div>
         ) : null}
       </AnimatePresence>
-    </header>
+    </>
   );
 }
