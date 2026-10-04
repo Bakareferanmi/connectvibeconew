@@ -41,7 +41,7 @@ const approachIcons = {
 
 function Home() {
   return (
-    <main>
+    <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
         kicker="Sustainable infrastructure · Community · Opportunity"
         title={

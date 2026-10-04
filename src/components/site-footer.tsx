@@ -1,7 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Linkedin, Youtube, type LucideIcon } from "lucide-react";
+import { Heart, Instagram, Linkedin, Youtube, type LucideIcon } from "lucide-react";
 import type { SVGProps } from "react";
+import { COOKIE_SETTINGS_EVENT } from "@/components/cookie-notice";
 import { Logo } from "@/components/logo";
+import { NewsletterForm } from "@/components/newsletter-form";
+import { Button } from "@/components/ui/button";
 import { nav, site, social } from "@/lib/site-data";
 
 /** X (Twitter) mark, drawn in the same 24px / 2px-stroke style as Lucide icons. */
@@ -69,6 +72,20 @@ export function SiteFooter() {
             >
               {site.email}
             </a>
+            {site.donateUrl ? (
+              <div className="mt-6">
+                <Button asChild variant="teal">
+                  <a href={site.donateUrl} target="_blank" rel="noreferrer">
+                    <Heart className="size-4" aria-hidden="true" />
+                    Donate
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                </Button>
+              </div>
+            ) : null}
+            <div className="mt-8">
+              <NewsletterForm />
+            </div>
           </div>
           {groups.map((group) => (
             <div key={group.title} className="lg:col-span-2">
@@ -116,7 +133,7 @@ export function SiteFooter() {
                 );
               })}
             </ul>
-            <p className="mt-8 text-xs leading-relaxed text-snow/50">
+            <p className="mt-8 text-xs leading-relaxed text-snow/65">
               {site.legalName}
               <br />
               {site.charityLine}
@@ -124,11 +141,11 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-3 border-t border-snow/10 pt-6 text-xs text-snow/45 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-16 flex flex-col gap-3 border-t border-snow/10 pt-6 text-xs text-snow/65 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} {site.legalName}
           </p>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-x-4 gap-y-2">
             {nav.slice(0, 3).map((n) => (
               <Link key={n.href} to={n.href} className="hover:text-snow">
                 {n.label}
@@ -137,6 +154,16 @@ export function SiteFooter() {
             <Link to="/contact" className="hover:text-snow">
               Contact
             </Link>
+            <Link to="/privacy" className="hover:text-snow">
+              Privacy
+            </Link>
+            <button
+              type="button"
+              className="hover:text-snow"
+              onClick={() => window.dispatchEvent(new Event(COOKIE_SETTINGS_EVENT))}
+            >
+              Cookie settings
+            </button>
           </div>
         </div>
       </div>

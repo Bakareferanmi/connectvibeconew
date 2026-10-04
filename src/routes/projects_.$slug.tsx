@@ -8,7 +8,7 @@ import { Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { getProject, projects } from "@/lib/site-data";
 
-export const Route = createFileRoute("/projects/$slug")({
+export const Route = createFileRoute("/projects_/$slug")({
   component: ProjectDetailPage,
   loader: ({ params }) => {
     const project = getProject(params.slug);
@@ -25,7 +25,7 @@ function ProjectDetailPage() {
   const others = projects.filter((p) => p.slug !== project.slug).slice(0, 3);
 
   return (
-    <main>
+    <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
         kicker={`${project.number} · ${project.theme} · ${project.place}`}
         title={project.title}

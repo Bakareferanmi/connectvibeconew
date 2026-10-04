@@ -15,7 +15,7 @@ export const Route = createFileRoute("/community")({
 
 function CommunityPage() {
   return (
-    <main>
+    <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
         kicker="Community"
         title="More than a programme page."

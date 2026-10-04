@@ -34,7 +34,7 @@ const measures = [
 
 function ImpactPage() {
   return (
-    <main>
+    <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
         kicker="Impact"
         title="Impact that can be seen."

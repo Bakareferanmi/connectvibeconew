@@ -36,6 +36,9 @@ export function PageHero({
       <img
         src={image}
         alt={imageAlt}
+        loading="eager"
+        decoding="async"
+        fetchPriority="high"
         className={cn(
           "absolute inset-0 size-full object-cover",
           !reduce && "hero-kenburns",

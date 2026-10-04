@@ -60,7 +60,7 @@ const doors = [
 
 function GetInvolvedPage() {
   return (
-    <main>
+    <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
         kicker="Get involved"
         title="There is a door for every kind of yes."

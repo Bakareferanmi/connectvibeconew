@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { CtaBand } from "@/components/cta-band";
+import { EventRegisterForm } from "@/components/event-register-form";
 import { Media } from "@/components/media";
 import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
@@ -9,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/dates";
 import { getEvent } from "@/lib/site-data";
 
-export const Route = createFileRoute("/events/$slug")({
+export const Route = createFileRoute("/events_/$slug")({
   component: EventDetailPage,
   loader: ({ params }) => {
     const event = getEvent(params.slug);
@@ -25,7 +26,7 @@ function EventDetailPage() {
   const { event } = Route.useLoaderData();
 
   return (
-    <main>
+    <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
         kicker={`${event.past ? "Past event" : "Upcoming"} · ${event.kind}`}
         title={event.title}
@@ -43,9 +44,7 @@ function EventDetailPage() {
             </Button>
             {!event.past ? (
               <Button asChild variant="onDarkSolid">
-                <Link to="/contact" search={{ intent: "general" }}>
-                  Register interest
-                </Link>
+                <a href="#register">Register</a>
               </Button>
             ) : null}
           </>
@@ -72,6 +71,14 @@ function EventDetailPage() {
           </div>
         )}
       </Section>
+
+      {!event.past ? (
+        <Section>
+          <div id="register" className="mx-auto max-w-2xl scroll-mt-28">
+            <EventRegisterForm slug={event.slug} title={event.title} />
+          </div>
+        </Section>
+      ) : null}
 
       <CtaBand />
     </main>

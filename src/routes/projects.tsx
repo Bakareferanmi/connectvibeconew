@@ -20,7 +20,7 @@ const statusLabel: Record<ProjectStatus, string> = {
 
 function ProjectsPage() {
   return (
-    <main>
+    <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
         kicker="Projects"
         title="From ideas to places people can use."

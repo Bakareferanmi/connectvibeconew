@@ -40,7 +40,7 @@ function EventsPage() {
   );
 
   return (
-    <main>
+    <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
         kicker="Events"
         title="A calendar you can actually use."

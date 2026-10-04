@@ -72,6 +72,19 @@
     text-wrap: pretty;
   }
 
+  a:focus-visible,
+  button:focus-visible,
+  summary:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--color-ocean);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  main:focus {
+    outline: none;
+  }
+
   ::selection {
     background: color-mix(in oklab, var(--color-teal) 35%, white);
     color: var(--color-deep);

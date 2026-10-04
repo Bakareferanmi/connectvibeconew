@@ -16,7 +16,7 @@ export const Route = createFileRoute("/what-we-do")({
 
 function WhatWeDoPage() {
   return (
-    <main>
+    <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
         kicker="What we do"
         title="Build. Connect. Empower. Sustain."

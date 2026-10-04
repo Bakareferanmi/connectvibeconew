@@ -33,7 +33,7 @@ const values = [
 
 function AboutPage() {
   return (
-    <main>
+    <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
         kicker="About the trust"
         title="A charity that builds, and stays."

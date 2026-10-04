@@ -21,7 +21,7 @@ function ContactPage() {
   const { intent } = Route.useSearch();
 
   return (
-    <main>
+    <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
         kicker="Contact"
         title="Six doors. One team."

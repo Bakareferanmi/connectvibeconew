@@ -1,12 +1,12 @@
 "use client";
 
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, Heart } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { nav } from "@/lib/site-data";
+import { nav, site } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 export function SiteHeader() {
@@ -31,6 +31,16 @@ export function SiteHeader() {
     return () => {
       document.body.style.overflow = "";
     };
+  }, [open]);
+
+  // Close the mobile menu with the Escape key
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
   // Light bar only when scrolled AND menu is closed. While the menu is open the header goes dark.
@@ -66,6 +76,7 @@ export function SiteHeader() {
                 <Link
                   key={item.href}
                   to={item.href}
+                  aria-current={active ? "page" : undefined}
                   className={cn(
                     "rounded-full px-3 py-2 text-[0.8125rem] font-medium tracking-tight transition-[color,background-color] duration-200",
                     solid
@@ -84,11 +95,20 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-2">
+            {site.donateUrl ? (
+              <Button asChild size="sm" variant="teal" className="hidden md:inline-flex">
+                <a href={site.donateUrl} target="_blank" rel="noreferrer">
+                  <Heart className="size-4" aria-hidden="true" />
+                  Donate
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              </Button>
+            ) : null}
             <Button
               asChild
               size="sm"
               variant={solid ? "primary" : "onDarkSolid"}
-              className="hidden sm:inline-flex"
+              className="hidden lg:inline-flex"
             >
               <Link to="/get-involved">
                 Get involved
@@ -153,6 +173,11 @@ export function SiteHeader() {
                     <Link
                       to={item.href}
                       onClick={() => setOpen(false)}
+                      aria-current={
+                        pathname === item.href || pathname.startsWith(`${item.href}/`)
+                          ? "page"
+                          : undefined
+                      }
                       className="block py-3 text-3xl font-semibold tracking-tight text-snow"
                     >
                       {item.label}
@@ -160,11 +185,22 @@ export function SiteHeader() {
                   </motion.div>
                 ))}
               </nav>
-              <Button asChild variant="onDarkSolid" size="lg" className="w-full">
-                <Link to="/get-involved" onClick={() => setOpen(false)}>
-                  Get involved
-                </Link>
-              </Button>
+              <div className="grid gap-3">
+                {site.donateUrl ? (
+                  <Button asChild variant="teal" size="lg" className="w-full">
+                    <a href={site.donateUrl} target="_blank" rel="noreferrer">
+                      <Heart className="size-5" aria-hidden="true" />
+                      Donate
+                      <span className="sr-only"> (opens in a new tab)</span>
+                    </a>
+                  </Button>
+                ) : null}
+                <Button asChild variant="onDarkSolid" size="lg" className="w-full">
+                  <Link to="/get-involved" onClick={() => setOpen(false)}>
+                    Get involved
+                  </Link>
+                </Button>
+              </div>
             </div>
           </motion.div>
         ) : null}

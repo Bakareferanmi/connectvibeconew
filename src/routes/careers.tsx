@@ -30,7 +30,7 @@ function CareersPage() {
   );
 
   return (
-    <main>
+    <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
         kicker="Careers"
         title="Build your career while building stronger communities."
