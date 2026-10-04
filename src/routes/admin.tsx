@@ -15,6 +15,7 @@ import {
   adminSave,
   adminSession,
   adminSubmissions,
+  adminUploadImage,
 } from "@/lib/admin";
 import { defaults, type ContentType } from "@/lib/content-store";
 import { loadContent } from "@/lib/content";
@@ -58,7 +59,7 @@ const FIELDS: Record<ContentType, Field[]> = {
     { key: "summary", label: "Short summary", kind: "textarea", rows: 3, required: true, help: "Shown on the events list." },
     { key: "body", label: "Full description", kind: "textarea", rows: 7, required: true },
     { key: "image", label: "Main image", kind: "image", required: true },
-    { key: "gallery", label: "Gallery images (optional, one per line)", kind: "lines", rows: 3 },
+    { key: "gallery", label: "Gallery images (optional)", kind: "lines", rows: 3 },
     { key: "pricing", label: "Tickets", kind: "select", options: [{ value: "free", label: "Free to attend" }, { value: "paid", label: "Paid (visitors pay online)" }], required: true, help: "Free events use the simple registration form. Paid events take visitors to checkout." },
     { key: "currency", label: "Currency", kind: "select", options: [{ value: "NGN", label: "Naira (₦)" }, { value: "GBP", label: "Pounds (£)" }, { value: "USD", label: "US dollars ($)" }], required: true, showIf: { key: "pricing", value: "paid" } },
     { key: "price", label: "Price per place", kind: "number", required: true, showIf: { key: "pricing", value: "paid" }, help: "In the currency above, e.g. 25 or 12.50. Each visitor can book up to 6 places." },
@@ -126,6 +127,73 @@ function normImage(v: string): string {
   if (/^images\//i.test(s)) return `/${s}`;
   if (/^[\w.\- ]+\.(jpe?g|png|webp|avif|gif|svg)$/i.test(s)) return `/images/${s.trim()}`;
   return s;
+}
+
+/** Shrink a picture in the browser (max 1800px, WebP) so phone photos upload quickly. Returns base64. */
+async function shrinkToBase64(file: File): Promise<string> {
+  const bitmap = await createImageBitmap(file);
+  const scale = Math.min(1, 1800 / Math.max(bitmap.width, bitmap.height));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.round(bitmap.width * scale);
+  canvas.height = Math.round(bitmap.height * scale);
+  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  bitmap.close();
+  const blob: Blob = await new Promise((resolve, reject) =>
+    canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("Could not read that picture"))), "image/webp", 0.85),
+  );
+  const buf = new Uint8Array(await blob.arrayBuffer());
+  let bin = "";
+  for (let i = 0; i < buf.length; i += 0x8000) bin += String.fromCharCode(...buf.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+
+function UploadButton({
+  multiple,
+  label,
+  onUploaded,
+}: {
+  multiple?: boolean;
+  label: string;
+  onUploaded: (urls: string[]) => void;
+}) {
+  const [busy, setBusy] = useState(false);
+  async function onPick(files: FileList | null) {
+    if (!files?.length) return;
+    setBusy(true);
+    const urls: string[] = [];
+    try {
+      for (const file of Array.from(files)) {
+        if (!file.type.startsWith("image/")) throw new Error(`${file.name} is not a picture`);
+        const data = await shrinkToBase64(file).catch(() => {
+          throw new Error(`Couldn’t read ${file.name}. Try a JPG, PNG or WebP picture`);
+        });
+        const res = await adminUploadImage({ data: { name: file.name, data } });
+        urls.push(res.url);
+      }
+      toast.success(urls.length === 1 ? "Picture uploaded." : `${urls.length} pictures uploaded.`);
+    } catch (err) {
+      toast.error(errorMessage(err));
+    } finally {
+      if (urls.length) onUploaded(urls);
+      setBusy(false);
+    }
+  }
+  return (
+    <label className="inline-flex w-fit cursor-pointer items-center rounded-full bg-deep px-4 py-2 text-sm font-medium text-snow transition-colors hover:bg-ocean has-[:disabled]:cursor-wait has-[:disabled]:opacity-60">
+      {busy ? "Uploading..." : label}
+      <input
+        type="file"
+        accept="image/*"
+        multiple={multiple}
+        disabled={busy}
+        className="sr-only"
+        onChange={(e) => {
+          void onPick(e.target.files);
+          e.target.value = "";
+        }}
+      />
+    </label>
+  );
 }
 
 function fromValues(type: ContentType, values: Record<string, string>): Json {
@@ -569,13 +637,22 @@ function FieldInput({
     <div className={cn("grid gap-2", wide && "sm:col-span-2")}>
       <Label htmlFor={id}>{f.label}</Label>
       {f.kind === "textarea" || f.kind === "lines" ? (
-        <Textarea
-          id={id}
-          rows={f.rows ?? 4}
-          value={value}
-          required={f.required}
-          onChange={(e) => onChange(e.target.value)}
-        />
+        <>
+          <Textarea
+            id={id}
+            rows={f.rows ?? 4}
+            value={value}
+            required={f.required}
+            onChange={(e) => onChange(e.target.value)}
+          />
+          {f.key === "gallery" ? (
+            <UploadButton
+              multiple
+              label="Upload pictures"
+              onUploaded={(urls) => onChange([value.trim(), ...urls].filter(Boolean).join("\n"))}
+            />
+          ) : null}
+        </>
       ) : f.kind === "select" ? (
         <select
           id={id}
@@ -608,8 +685,9 @@ function FieldInput({
               <option key={p} value={p} />
             ))}
           </datalist>
+          <UploadButton label="Upload a picture" onUploaded={(urls) => onChange(urls[0])} />
           <p className="text-xs text-muted">
-            Pick one of the site’s images from the list, or paste a full https:// link to your own image.
+            Upload a picture from your device. You can also pick one of the site’s images from the list, or paste a full https:// link.
           </p>
           {value ? (
             <img

@@ -277,6 +277,12 @@ export async function saveItem(
   clearContentCache();
 }
 
+export async function uploadImage(name: string, base64: string): Promise<string> {
+  requirePersistent();
+  const { saveImage } = await import("./images.server.ts");
+  return (await saveImage(name, base64)).url;
+}
+
 export async function deleteItem(type: ContentType, s: string): Promise<void> {
   requirePersistent();
   const sql = await getSql();

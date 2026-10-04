@@ -83,3 +83,14 @@ export const adminDeleteSubmission = createServerFn({ method: "POST" })
     await a.deleteSubmission(data.id);
     return { ok: true as const };
   });
+
+/** Upload one picture (already shrunk in the browser). Returns its address, e.g. /media/ab12... */
+export const adminUploadImage = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) =>
+    z.object({ name: z.string().max(200), data: z.string().min(1).max(8_000_000) }).parse(d),
+  )
+  .handler(async ({ data }) => {
+    const a = await import("./admin.server.ts");
+    await a.requireAdmin();
+    return { url: await a.uploadImage(data.name, data.data) };
+  });

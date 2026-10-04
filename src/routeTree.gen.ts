@@ -23,6 +23,7 @@ import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as WhatWeDoRouteImport } from './routes/what-we-do'
 import { Route as CheckoutOrderIdRouteImport } from './routes/checkout.$orderId'
 import { Route as EventsSlugRouteImport } from './routes/events_.$slug'
+import { Route as MediaIdRouteImport } from './routes/media.$id'
 import { Route as ProjectsSlugRouteImport } from './routes/projects_.$slug'
 import { Route as OgKindSlugRouteImport } from './routes/og.$kind.$slug'
 
@@ -96,6 +97,11 @@ const EventsSlugRoute = EventsSlugRouteImport.update({
   path: '/events/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MediaIdRoute = MediaIdRouteImport.update({
+  id: '/media/$id',
+  path: '/media/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
   id: '/projects_/$slug',
   path: '/projects/$slug',
@@ -122,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/what-we-do': typeof WhatWeDoRoute
   '/checkout/$orderId': typeof CheckoutOrderIdRoute
   '/events/$slug': typeof EventsSlugRoute
+  '/media/$id': typeof MediaIdRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/og/$kind/$slug': typeof OgKindSlugRoute
 }
@@ -140,6 +147,7 @@ export interface FileRoutesByTo {
   '/what-we-do': typeof WhatWeDoRoute
   '/checkout/$orderId': typeof CheckoutOrderIdRoute
   '/events/$slug': typeof EventsSlugRoute
+  '/media/$id': typeof MediaIdRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/og/$kind/$slug': typeof OgKindSlugRoute
 }
@@ -159,6 +167,7 @@ export interface FileRoutesById {
   '/what-we-do': typeof WhatWeDoRoute
   '/checkout/$orderId': typeof CheckoutOrderIdRoute
   '/events_/$slug': typeof EventsSlugRoute
+  '/media/$id': typeof MediaIdRoute
   '/projects_/$slug': typeof ProjectsSlugRoute
   '/og/$kind/$slug': typeof OgKindSlugRoute
 }
@@ -179,6 +188,7 @@ export interface FileRouteTypes {
     | '/what-we-do'
     | '/checkout/$orderId'
     | '/events/$slug'
+    | '/media/$id'
     | '/projects/$slug'
     | '/og/$kind/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -197,6 +207,7 @@ export interface FileRouteTypes {
     | '/what-we-do'
     | '/checkout/$orderId'
     | '/events/$slug'
+    | '/media/$id'
     | '/projects/$slug'
     | '/og/$kind/$slug'
   id:
@@ -215,6 +226,7 @@ export interface FileRouteTypes {
     | '/what-we-do'
     | '/checkout/$orderId'
     | '/events_/$slug'
+    | '/media/$id'
     | '/projects_/$slug'
     | '/og/$kind/$slug'
   fileRoutesById: FileRoutesById
@@ -234,6 +246,7 @@ export interface RootRouteChildren {
   WhatWeDoRoute: typeof WhatWeDoRoute
   CheckoutOrderIdRoute: typeof CheckoutOrderIdRoute
   EventsSlugRoute: typeof EventsSlugRoute
+  MediaIdRoute: typeof MediaIdRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
   OgKindSlugRoute: typeof OgKindSlugRoute
 }
@@ -338,6 +351,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/media/$id': {
+      id: '/media/$id'
+      path: '/media/$id'
+      fullPath: '/media/$id'
+      preLoaderRoute: typeof MediaIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects_/$slug': {
       id: '/projects_/$slug'
       path: '/projects/$slug'
@@ -370,6 +390,7 @@ const rootRouteChildren: RootRouteChildren = {
   WhatWeDoRoute: WhatWeDoRoute,
   CheckoutOrderIdRoute: CheckoutOrderIdRoute,
   EventsSlugRoute: EventsSlugRoute,
+  MediaIdRoute: MediaIdRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
   OgKindSlugRoute: OgKindSlugRoute,
 }
