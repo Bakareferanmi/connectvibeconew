@@ -35,7 +35,9 @@ export const Route = createFileRoute("/admin")({
 type Field = {
   key: string;
   label: string;
-  kind: "text" | "textarea" | "select" | "date" | "lines" | "image";
+  kind: "text" | "textarea" | "select" | "date" | "lines" | "image" | "number";
+  /** Only show this field while another field has this value. */
+  showIf?: { key: string; value: string };
   options?: { value: string; label: string }[];
   required?: boolean;
   help?: string;
@@ -57,6 +59,9 @@ const FIELDS: Record<ContentType, Field[]> = {
     { key: "body", label: "Full description", kind: "textarea", rows: 7, required: true },
     { key: "image", label: "Main image", kind: "image", required: true },
     { key: "gallery", label: "Gallery images (optional, one per line)", kind: "lines", rows: 3 },
+    { key: "pricing", label: "Tickets", kind: "select", options: [{ value: "free", label: "Free to attend" }, { value: "paid", label: "Paid (visitors pay online)" }], required: true, help: "Free events use the simple registration form. Paid events take visitors to checkout." },
+    { key: "currency", label: "Currency", kind: "select", options: [{ value: "NGN", label: "Naira (₦)" }, { value: "GBP", label: "Pounds (£)" }, { value: "USD", label: "US dollars ($)" }], required: true, showIf: { key: "pricing", value: "paid" } },
+    { key: "price", label: "Price per place", kind: "number", required: true, showIf: { key: "pricing", value: "paid" }, help: "In the currency above, e.g. 25 or 12.50. Each visitor can book up to 6 places." },
   ],
   project: [
     { key: "title", label: "Title", kind: "text", required: true },
@@ -110,6 +115,7 @@ function toValues(type: ContentType, item: Json | null): Record<string, string> 
     const v = item?.[f.key];
     values[f.key] = Array.isArray(v) ? v.join("\n") : v == null ? "" : String(v);
   }
+  if (type === "event" && !values.pricing) values.pricing = "free"; // events made before pricing existed
   return values;
 }
 
@@ -117,10 +123,13 @@ function fromValues(type: ContentType, values: Record<string, string>): Json {
   const out: Json = { slug: values.slug.trim() };
   for (const f of FIELDS[type]) {
     const raw = values[f.key] ?? "";
+    if (f.showIf && values[f.showIf.key] !== f.showIf.value) continue; // hidden field
     out[f.key] =
       f.kind === "lines"
         ? raw.split("\n").map((l) => l.trim()).filter(Boolean)
-        : raw.trim();
+        : f.kind === "number"
+          ? raw.trim() === "" ? undefined : Number(raw)
+          : raw.trim();
   }
   return out;
 }
@@ -428,7 +437,9 @@ function ContentManager({
           {editing.original ? `Edit ${label.singular}` : `New ${label.singular}`}
         </h2>
         <div className="mt-6 grid gap-5 sm:grid-cols-2">
-          {FIELDS[type].map((f) => (
+          {FIELDS[type]
+            .filter((f) => !f.showIf || values[f.showIf.key] === f.showIf.value)
+            .map((f) => (
             <FieldInput
               key={f.key}
               field={f}
@@ -598,7 +609,8 @@ function FieldInput({
       ) : (
         <Input
           id={id}
-          type={f.kind === "date" ? "date" : "text"}
+          type={f.kind === "date" ? "date" : f.kind === "number" ? "number" : "text"}
+          {...(f.kind === "number" ? { min: 0, step: "0.01", inputMode: "decimal" as const } : {})}
           value={value}
           required={f.required}
           onChange={(e) => onChange(e.target.value)}
@@ -625,7 +637,8 @@ function detailText(r: Row): string {
   try {
     const d = JSON.parse(r.detailsJson) as Json;
     if (r.kind === "event") {
-      const parts = [String(d.event ?? ""), d.places ? `${d.places} place(s)` : "", String(d.notes ?? "")];
+      const paid = d.payment ? `${String(d.payment)} ${String(d.amount ?? "")}`.trim() : "";
+      const parts = [String(d.event ?? ""), d.places ? `${d.places} place(s)` : "", paid, String(d.notes ?? "")];
       return parts.filter(Boolean).join(" · ");
     }
     return Object.values(d).filter(Boolean).join(" · ");

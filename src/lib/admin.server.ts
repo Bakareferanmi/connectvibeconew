@@ -132,7 +132,22 @@ export const schemas = {
     body: text(3000),
     image: imagePath,
     gallery: z.array(imagePath).max(12).optional(),
-  }),
+    pricing: z.enum(["free", "paid"]).default("free"),
+    price: z.number().positive("Enter a price above 0").max(10_000_000).optional(),
+    currency: z.enum(["NGN", "GBP", "USD"]).optional(),
+  }).superRefine((v, ctx) => {
+    if (v.pricing === "paid") {
+      if (v.price === undefined) {
+        ctx.addIssue({ code: "custom", path: ["price"], message: "Enter the ticket price" });
+      }
+      if (!v.currency) {
+        ctx.addIssue({ code: "custom", path: ["currency"], message: "Choose a currency" });
+      }
+    }
+  }).transform((v) =>
+    // a free event carries no price or currency
+    v.pricing === "free" ? { ...v, price: undefined, currency: undefined } : v,
+  ),
   project: z.object({
     slug,
     number: text(10),

@@ -8,6 +8,7 @@ import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import { Kicker, Section } from "@/components/section";
 import { formatDate } from "@/lib/dates";
+import { eventPrice, priceLabel } from "@/lib/pricing";
 import {
   eventKinds,
   events,
@@ -98,6 +99,7 @@ function EventsPage() {
                 <div className="flex flex-1 flex-col p-5">
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-ocean">
                     {formatDate(e.date)} · {e.kind}
+                    {eventPrice(e) ? ` · ${priceLabel(e)}` : ""}
                   </p>
                   <h3 className="mt-2 text-lg font-semibold text-deep">{e.title}</h3>
                   <p className="mt-2 text-sm text-muted">

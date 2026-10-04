@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { loadContent } from "@/lib/content";
+import { eventPrice } from "@/lib/pricing";
 import { getEvent } from "@/lib/site-data";
 
 /** Hidden "company" field: real people leave it empty, bots fill it in. */
@@ -73,6 +74,7 @@ export const registerForEvent = createServerFn({ method: "POST" })
     await loadContent(); // the event may have been added in /admin
     const event = getEvent(data.slug);
     if (!event || event.past) throw new Error("This event is not open for registration");
+    if (eventPrice(event)) throw new Error("This event needs a ticket. Please use the booking form");
     const { escapeHtml } = await import("./forms.server.ts");
     const notes = data.notes || "(none)";
     await record({

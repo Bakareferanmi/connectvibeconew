@@ -7,8 +7,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { registerForEvent } from "@/lib/forms";
+import { startCheckout } from "@/lib/payments";
+import { formatMoney, type EventPrice } from "@/lib/pricing";
 
-export function EventRegisterForm({ slug, title }: { slug: string; title: string }) {
+export function EventRegisterForm({
+  slug,
+  title,
+  price,
+}: {
+  slug: string;
+  title: string;
+  /** null = free event (simple registration); otherwise visitors go to checkout. */
+  price: EventPrice | null;
+}) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [guests, setGuests] = useState("1");
@@ -22,17 +33,30 @@ export function EventRegisterForm({ slug, title }: { slug: string; title: string
     if (busy) return;
     setBusy(true);
     try {
+      if (price) {
+        const { url } = await startCheckout({
+          data: { slug, name, email, guests: Number(guests), notes, company },
+        });
+        window.location.assign(url); // keep busy: we are leaving this page
+        return;
+      }
       await registerForEvent({
         data: { slug, name, email, guests: Number(guests), notes, company },
       });
       setDone(true);
       toast.success("You’re registered. We’ll be in touch.");
     } catch {
-      toast.error("Sorry, we couldn’t register you. Please check your details and try again.");
-    } finally {
-      setBusy(false);
+      toast.error(
+        price
+          ? "Sorry, we couldn’t start your booking. Please check your details and try again."
+          : "Sorry, we couldn’t register you. Please check your details and try again.",
+      );
     }
+    setBusy(false);
   }
+
+  const places = Math.min(6, Math.max(1, Number(guests) || 1));
+  const total = price ? formatMoney(price.minor * places, price.currency) : null;
 
   if (done) {
     return (
@@ -58,10 +82,12 @@ export function EventRegisterForm({ slug, title }: { slug: string; title: string
       aria-labelledby="register-heading"
     >
       <h2 id="register-heading" className="text-2xl font-semibold tracking-tight text-deep">
-        Register for this event
+        {price ? "Book your place" : "Register for this event"}
       </h2>
       <p className="mt-2 text-sm text-muted">
-        Free to attend. Tell us who is coming and we’ll send the details.
+        {price
+          ? `${formatMoney(price.minor, price.currency)} per place. Tell us who is coming, then you’ll go to a secure checkout.`
+          : "Free to attend. Tell us who is coming and we’ll send the details."}
       </p>
 
       <div className="mt-6 grid gap-5 sm:grid-cols-2">
@@ -128,7 +154,13 @@ export function EventRegisterForm({ slug, title }: { slug: string; title: string
       </div>
 
       <Button type="submit" size="lg" className="mt-6" disabled={busy}>
-        {busy ? "Registering..." : "Register"}
+        {price
+          ? busy
+            ? "Starting checkout..."
+            : `Continue to payment · ${total}`
+          : busy
+            ? "Registering..."
+            : "Register"}
       </Button>
       <p className="mt-4 text-xs text-muted">
         We use your details only to run this event.{" "}

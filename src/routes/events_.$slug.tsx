@@ -9,6 +9,7 @@ import { Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { loadContent } from "@/lib/content";
 import { formatDate } from "@/lib/dates";
+import { eventPrice, priceLabel } from "@/lib/pricing";
 import { shareMeta } from "@/lib/seo";
 import { getEvent } from "@/lib/site-data";
 
@@ -37,13 +38,14 @@ export const Route = createFileRoute("/events_/$slug")({
 
 function EventDetailPage() {
   const { event } = Route.useLoaderData();
+  const price = eventPrice(event);
 
   return (
     <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
         kicker={`${event.past ? "Past event" : "Upcoming"} · ${event.kind}`}
         title={event.title}
-        lede={`${formatDate(event.date)} · ${event.place}, ${event.city}`}
+        lede={`${formatDate(event.date)} · ${event.place}, ${event.city} · ${priceLabel(event)}`}
         image={event.image}
         imageAlt={event.title}
         compact
@@ -57,7 +59,7 @@ function EventDetailPage() {
             </Button>
             {!event.past ? (
               <Button asChild variant="onDarkSolid">
-                <a href="#register">Register</a>
+                <a href="#register">{price ? "Book a place" : "Register"}</a>
               </Button>
             ) : null}
           </>
@@ -88,7 +90,7 @@ function EventDetailPage() {
       {!event.past ? (
         <Section>
           <div id="register" className="mx-auto max-w-2xl scroll-mt-28">
-            <EventRegisterForm slug={event.slug} title={event.title} />
+            <EventRegisterForm slug={event.slug} title={event.title} price={price} />
           </div>
         </Section>
       ) : null}

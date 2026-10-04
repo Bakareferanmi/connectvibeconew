@@ -11,16 +11,20 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as GetInvolvedRouteImport } from './routes/get-involved'
 import { Route as ImpactRouteImport } from './routes/impact'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as WhatWeDoRouteImport } from './routes/what-we-do'
-import { Route as EventsSlugRouteImport } from './routes/events.$slug'
-import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
+import { Route as CheckoutOrderIdRouteImport } from './routes/checkout.$orderId'
+import { Route as EventsSlugRouteImport } from './routes/events_.$slug'
+import { Route as ProjectsSlugRouteImport } from './routes/projects_.$slug'
+import { Route as OgKindSlugRouteImport } from './routes/og.$kind.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -30,6 +34,11 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CareersRoute = CareersRouteImport.update({
@@ -62,6 +71,11 @@ const ImpactRoute = ImpactRouteImport.update({
   path: '/impact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectsRoute = ProjectsRouteImport.update({
   id: '/projects',
   path: '/projects',
@@ -72,116 +86,156 @@ const WhatWeDoRoute = WhatWeDoRouteImport.update({
   path: '/what-we-do',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CheckoutOrderIdRoute = CheckoutOrderIdRouteImport.update({
+  id: '/checkout/$orderId',
+  path: '/checkout/$orderId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EventsSlugRoute = EventsSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => EventsRoute,
+  id: '/events_/$slug',
+  path: '/events/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => ProjectsRoute,
+  id: '/projects_/$slug',
+  path: '/projects/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OgKindSlugRoute = OgKindSlugRouteImport.update({
+  id: '/og/$kind/$slug',
+  path: '/og/$kind/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/careers': typeof CareersRoute
   '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
-  '/events': typeof EventsRouteWithChildren
+  '/events': typeof EventsRoute
   '/get-involved': typeof GetInvolvedRoute
   '/impact': typeof ImpactRoute
-  '/projects': typeof ProjectsRouteWithChildren
+  '/privacy': typeof PrivacyRoute
+  '/projects': typeof ProjectsRoute
   '/what-we-do': typeof WhatWeDoRoute
+  '/checkout/$orderId': typeof CheckoutOrderIdRoute
   '/events/$slug': typeof EventsSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/og/$kind/$slug': typeof OgKindSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/careers': typeof CareersRoute
   '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
-  '/events': typeof EventsRouteWithChildren
+  '/events': typeof EventsRoute
   '/get-involved': typeof GetInvolvedRoute
   '/impact': typeof ImpactRoute
-  '/projects': typeof ProjectsRouteWithChildren
+  '/privacy': typeof PrivacyRoute
+  '/projects': typeof ProjectsRoute
   '/what-we-do': typeof WhatWeDoRoute
+  '/checkout/$orderId': typeof CheckoutOrderIdRoute
   '/events/$slug': typeof EventsSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/og/$kind/$slug': typeof OgKindSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/careers': typeof CareersRoute
   '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
-  '/events': typeof EventsRouteWithChildren
+  '/events': typeof EventsRoute
   '/get-involved': typeof GetInvolvedRoute
   '/impact': typeof ImpactRoute
-  '/projects': typeof ProjectsRouteWithChildren
+  '/privacy': typeof PrivacyRoute
+  '/projects': typeof ProjectsRoute
   '/what-we-do': typeof WhatWeDoRoute
-  '/events/$slug': typeof EventsSlugRoute
-  '/projects/$slug': typeof ProjectsSlugRoute
+  '/checkout/$orderId': typeof CheckoutOrderIdRoute
+  '/events_/$slug': typeof EventsSlugRoute
+  '/projects_/$slug': typeof ProjectsSlugRoute
+  '/og/$kind/$slug': typeof OgKindSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/careers'
     | '/community'
     | '/contact'
     | '/events'
     | '/get-involved'
     | '/impact'
+    | '/privacy'
     | '/projects'
     | '/what-we-do'
+    | '/checkout/$orderId'
     | '/events/$slug'
     | '/projects/$slug'
+    | '/og/$kind/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/admin'
     | '/careers'
     | '/community'
     | '/contact'
     | '/events'
     | '/get-involved'
     | '/impact'
+    | '/privacy'
     | '/projects'
     | '/what-we-do'
+    | '/checkout/$orderId'
     | '/events/$slug'
     | '/projects/$slug'
+    | '/og/$kind/$slug'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/careers'
     | '/community'
     | '/contact'
     | '/events'
     | '/get-involved'
     | '/impact'
+    | '/privacy'
     | '/projects'
     | '/what-we-do'
-    | '/events/$slug'
-    | '/projects/$slug'
+    | '/checkout/$orderId'
+    | '/events_/$slug'
+    | '/projects_/$slug'
+    | '/og/$kind/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRoute
   CareersRoute: typeof CareersRoute
   CommunityRoute: typeof CommunityRoute
   ContactRoute: typeof ContactRoute
-  EventsRoute: typeof EventsRouteWithChildren
+  EventsRoute: typeof EventsRoute
   GetInvolvedRoute: typeof GetInvolvedRoute
   ImpactRoute: typeof ImpactRoute
-  ProjectsRoute: typeof ProjectsRouteWithChildren
+  PrivacyRoute: typeof PrivacyRoute
+  ProjectsRoute: typeof ProjectsRoute
   WhatWeDoRoute: typeof WhatWeDoRoute
+  CheckoutOrderIdRoute: typeof CheckoutOrderIdRoute
+  EventsSlugRoute: typeof EventsSlugRoute
+  ProjectsSlugRoute: typeof ProjectsSlugRoute
+  OgKindSlugRoute: typeof OgKindSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -198,6 +252,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/careers': {
@@ -242,6 +303,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ImpactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects': {
       id: '/projects'
       path: '/projects'
@@ -256,57 +324,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WhatWeDoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/events/$slug': {
-      id: '/events/$slug'
-      path: '/$slug'
+    '/checkout/$orderId': {
+      id: '/checkout/$orderId'
+      path: '/checkout/$orderId'
+      fullPath: '/checkout/$orderId'
+      preLoaderRoute: typeof CheckoutOrderIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events_/$slug': {
+      id: '/events_/$slug'
+      path: '/events/$slug'
       fullPath: '/events/$slug'
       preLoaderRoute: typeof EventsSlugRouteImport
-      parentRoute: typeof EventsRoute
+      parentRoute: typeof rootRouteImport
     }
-    '/projects/$slug': {
-      id: '/projects/$slug'
-      path: '/$slug'
+    '/projects_/$slug': {
+      id: '/projects_/$slug'
+      path: '/projects/$slug'
       fullPath: '/projects/$slug'
       preLoaderRoute: typeof ProjectsSlugRouteImport
-      parentRoute: typeof ProjectsRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/og/$kind/$slug': {
+      id: '/og/$kind/$slug'
+      path: '/og/$kind/$slug'
+      fullPath: '/og/$kind/$slug'
+      preLoaderRoute: typeof OgKindSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface EventsRouteChildren {
-  EventsSlugRoute: typeof EventsSlugRoute
-}
-
-const EventsRouteChildren: EventsRouteChildren = {
-  EventsSlugRoute: EventsSlugRoute,
-}
-
-const EventsRouteWithChildren =
-  EventsRoute._addFileChildren(EventsRouteChildren)
-
-interface ProjectsRouteChildren {
-  ProjectsSlugRoute: typeof ProjectsSlugRoute
-}
-
-const ProjectsRouteChildren: ProjectsRouteChildren = {
-  ProjectsSlugRoute: ProjectsSlugRoute,
-}
-
-const ProjectsRouteWithChildren = ProjectsRoute._addFileChildren(
-  ProjectsRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRoute,
   CareersRoute: CareersRoute,
   CommunityRoute: CommunityRoute,
   ContactRoute: ContactRoute,
-  EventsRoute: EventsRouteWithChildren,
+  EventsRoute: EventsRoute,
   GetInvolvedRoute: GetInvolvedRoute,
   ImpactRoute: ImpactRoute,
-  ProjectsRoute: ProjectsRouteWithChildren,
+  PrivacyRoute: PrivacyRoute,
+  ProjectsRoute: ProjectsRoute,
   WhatWeDoRoute: WhatWeDoRoute,
+  CheckoutOrderIdRoute: CheckoutOrderIdRoute,
+  EventsSlugRoute: EventsSlugRoute,
+  ProjectsSlugRoute: ProjectsSlugRoute,
+  OgKindSlugRoute: OgKindSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

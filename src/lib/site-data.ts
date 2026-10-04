@@ -238,6 +238,11 @@ export type SiteEvent = {
   image: string;
   past?: boolean;
   gallery?: string[];
+  /** Tickets: "free" (the default when missing) or "paid" with a price and currency. */
+  pricing?: "free" | "paid";
+  /** Price per place in major units (e.g. 25 or 12.5). Only used when pricing is "paid". */
+  price?: number;
+  currency?: "NGN" | "GBP" | "USD";
 };
 
 export const events: SiteEvent[] = [
