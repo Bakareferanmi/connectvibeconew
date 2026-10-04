@@ -179,16 +179,49 @@ export const schemas = {
     summary: text(500),
     points: lines,
   }),
+  faq: z.object({
+    slug,
+    title: text(300),
+    body: text(3000),
+  }),
+  social: z.object({
+    slug,
+    title: text(40),
+    href: z
+      .string()
+      .trim()
+      .min(1, "Required")
+      .max(400)
+      .refine((v) => /^https:\/\/[^\s]+\.[^\s]+$/i.test(v), "Use the full link, starting with https://"),
+  }),
+  copy: z
+    .object({
+      slug,
+      text: z.string().trim().min(1, "The text can’t be empty. Use Reset to go back to the original").max(3000),
+    })
+    .superRefine((v, ctx) => {
+      if (v.slug === "site-donate-url" && !/^https:\/\/[^\s]+$/i.test(v.text)) {
+        ctx.addIssue({ code: "custom", path: ["text"], message: "Use the full link, starting with https://" });
+      }
+      if (v.slug === "site-email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.text)) {
+        ctx.addIssue({ code: "custom", path: ["text"], message: "Enter a valid email address" });
+      }
+    }),
 } as const;
 
 /** `json` is the item as a JSON string (parsed in the browser), which keeps the server-function types simple. */
 export type AdminItem = { slug: string; position: number; json: string };
 
-const TABLE_KEY: Record<ContentType, "events" | "projects" | "jobs"> = {
+/** Which built-in list holds the starting content for each managed type ("copy" has none). */
+const TABLE_KEY: Record<Exclude<ContentType, "copy">, "events" | "projects" | "jobs" | "faqs" | "socialItems"> = {
   event: "events",
   project: "projects",
   job: "jobs",
+  faq: "faqs",
+  social: "socialItems",
 };
+
+const LIST_TYPES = ["event", "project", "job", "faq", "social"] as const;
 
 export async function getAdminContent() {
   const sql = await getSql();
@@ -197,7 +230,7 @@ export async function getAdminContent() {
   const rows = await sql<{ type: string; slug: string; position: number; data: Record<string, unknown> }>`
     select type, slug, position, data from content_items order by position asc, updated_at asc`;
   const out = {} as Record<ContentType, { managed: boolean; items: AdminItem[] }>;
-  for (const type of ["event", "project", "job"] as const) {
+  for (const type of LIST_TYPES) {
     if (managed.has(type)) {
       out[type] = {
         managed: true,
@@ -220,11 +253,19 @@ export async function getAdminContent() {
       };
     }
   }
+  // Edited wording: always "managed" (an overlay), only the changed pieces are stored.
+  out.copy = {
+    managed: true,
+    items: rows
+      .filter((r) => r.type === "copy")
+      .map((r) => ({ slug: r.slug, position: r.position, json: JSON.stringify({ ...r.data, slug: r.slug }) })),
+  };
   return out;
 }
 
 export async function adoptDefaults(type: ContentType): Promise<void> {
   requirePersistent();
+  if (type === "copy") return;
   const sql = await getSql();
   const list = defaults[TABLE_KEY[type]] as unknown as Record<string, unknown>[];
   for (let i = 0; i < list.length; i += 1) {
@@ -255,7 +296,9 @@ export async function saveItem(
     }
   }
   const sql = await getSql();
-  await sql`insert into content_meta (type) values (${type}) on conflict do nothing`;
+  if (type !== "copy") {
+    await sql`insert into content_meta (type) values (${type}) on conflict do nothing`;
+  }
   if (!originalSlug) {
     const exists = await sql`select 1 from content_items where type = ${type} and slug = ${s}`;
     if (exists.length) throw new Error(`An item with the web address "${s}" already exists`);

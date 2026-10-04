@@ -9,6 +9,7 @@ import { Kicker, Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { culture, jobs, type JobKind } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
+import { copy } from "@/lib/content-store";
 
 export const Route = createFileRoute("/careers")({
   component: CareersPage,
@@ -24,17 +25,17 @@ const groups: { id: JobKind | "all"; label: string }[] = [
 
 function CareersPage() {
   const [kind, setKind] = useState<JobKind | "all">("all");
-  const list = useMemo(
-    () => jobs.filter((j) => (kind === "all" ? true : j.kind === kind)),
-    [kind],
-  );
+  const list = useMemo(() => jobs.filter((j) => (kind === "all" ? true : j.kind === kind)), [kind]);
 
   return (
     <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
-        kicker="Careers"
-        title="Build your career while building stronger communities."
-        lede="Not just vacancies. Employed roles, apprenticeships, volunteering, and a culture we will actually describe."
+        kicker={copy("careers-hero-kicker", "Careers")}
+        title={copy("careers-hero-title", "Build your career while building stronger communities.")}
+        lede={copy(
+          "careers-hero-lede",
+          "Not just vacancies. Employed roles, apprenticeships, volunteering, and a culture we will actually describe.",
+        )}
         image="/images/careers.jpg"
         imageAlt="A construction professional overlooking a timber building site at dusk"
         compact
@@ -49,9 +50,9 @@ function CareersPage() {
 
       <Section className="bg-snow">
         <Reveal>
-          <Kicker>Working at Connect eVibe</Kicker>
+          <Kicker>{copy("careers-kicker-1", "Working at Connect eVibe")}</Kicker>
           <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-[-0.03em] text-deep sm:text-4xl">
-            Kind, not soft. On site, not only on slides.
+            {copy("careers-h2-1", "Kind, not soft. On site, not only on slides.")}
           </h2>
         </Reveal>
         <div className="mt-10 grid gap-4 md:grid-cols-2">
@@ -66,9 +67,9 @@ function CareersPage() {
 
       <Section>
         <Reveal>
-          <Kicker>Opportunities</Kicker>
+          <Kicker>{copy("careers-kicker-2", "Opportunities")}</Kicker>
           <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-deep">
-            Open seats, including the ones you grow into.
+            {copy("careers-h2-2", "Open seats, including the ones you grow into.")}
           </h2>
         </Reveal>
         <div className="mt-8 flex flex-wrap gap-2">

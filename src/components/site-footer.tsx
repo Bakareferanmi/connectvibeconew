@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Heart, Instagram, Linkedin, Youtube, type LucideIcon } from "lucide-react";
+import { Facebook, Github, Globe, Heart, Instagram, Linkedin, Youtube, type LucideIcon } from "lucide-react";
 import type { SVGProps } from "react";
 import { COOKIE_SETTINGS_EVENT } from "@/components/cookie-notice";
 import { Logo } from "@/components/logo";
@@ -29,10 +29,13 @@ function XIcon(props: SVGProps<SVGSVGElement>) {
 type IconType = LucideIcon | ((props: SVGProps<SVGSVGElement>) => React.JSX.Element);
 
 const socialIcons: Record<string, IconType> = {
-  Instagram,
-  LinkedIn: Linkedin,
-  X: XIcon,
-  YouTube: Youtube,
+  instagram: Instagram,
+  facebook: Facebook,
+  linkedin: Linkedin,
+  x: XIcon,
+  twitter: XIcon,
+  youtube: Youtube,
+  github: Github,
 };
 
 const groups = [
@@ -43,6 +46,7 @@ const groups = [
       { label: "What we do", href: "/what-we-do" },
       { label: "Impact", href: "/impact" },
       { label: "Careers", href: "/careers" },
+      { label: "FAQs", href: "/faq" },
     ],
   },
   {
@@ -112,7 +116,7 @@ export function SiteFooter() {
             </p>
             <ul className="mt-4 flex flex-wrap gap-3">
               {social.map((s) => {
-                const Icon = socialIcons[s.label];
+                const Icon = socialIcons[s.label.trim().toLowerCase()] ?? Globe;
                 return (
                   <li key={s.label}>
                     <a

@@ -1,29 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Building2,
-  Globe2,
-  Leaf,
-  Users,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight, Building2, Globe2, Leaf, Users } from "lucide-react";
 import { CountUp } from "@/components/count-up";
 import { CtaBand } from "@/components/cta-band";
+import { FaqList } from "@/components/faq";
 import { Media } from "@/components/media";
 import { PageHero } from "@/components/page-hero";
 import { Reveal, Stagger, StaggerItem } from "@/components/reveal";
 import { Kicker, Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/dates";
-import {
-  approach,
-  pillars,
-  projects,
-  site,
-  stats,
-  stories,
-  upcomingEvents,
-} from "@/lib/site-data";
+import { approach, pillars, projects, site, stats, stories, upcomingEvents } from "@/lib/site-data";
+import { copy } from "@/lib/content-store";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -43,7 +30,7 @@ function Home() {
   return (
     <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
-        kicker="Sustainable infrastructure · Community · Opportunity"
+        kicker={copy("home-hero-kicker", "Sustainable infrastructure · Community · Opportunity")}
         title={
           <>
             Building what
@@ -76,9 +63,12 @@ function Home() {
 
       <Section>
         <Reveal>
-          <Kicker>Our approach</Kicker>
+          <Kicker>{copy("home-kicker-1", "Our approach")}</Kicker>
           <h2 className="mt-3 max-w-3xl text-3xl font-semibold tracking-[-0.03em] text-deep sm:text-5xl">
-            Infrastructure should do more than stand. It should create opportunity.
+            {copy(
+              "home-h2-1",
+              "Infrastructure should do more than stand. It should create opportunity.",
+            )}
           </h2>
         </Reveal>
         <Stagger className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" delay={0.1}>
@@ -105,9 +95,9 @@ function Home() {
       <Section className="bg-snow pt-0 lg:pt-0">
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <Reveal>
-            <Kicker>What we do</Kicker>
+            <Kicker>{copy("home-kicker-2", "What we do")}</Kicker>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-deep sm:text-4xl">
-              Four ways we show up.
+              {copy("home-h2-2", "Four ways we show up.")}
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
@@ -161,9 +151,11 @@ function Home() {
         <div className="absolute inset-0 bg-gradient-to-r from-navy/90 via-deep/80 to-deep/70" />
         <div className="relative mx-auto max-w-[88rem] px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <Kicker className="text-teal">Impact that can be seen</Kicker>
+            <Kicker className="text-teal">
+              {copy("home-kicker-3", "Impact that can be seen")}
+            </Kicker>
             <h2 className="mt-3 max-w-xl text-3xl font-semibold tracking-[-0.03em] sm:text-4xl">
-              Numbers we will still be proud of in ten years.
+              {copy("home-h2-3", "Numbers we will still be proud of in ten years.")}
             </h2>
           </Reveal>
           <div className="mt-12 grid grid-cols-2 gap-8 lg:grid-cols-4">
@@ -196,9 +188,9 @@ function Home() {
       <Section>
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <Reveal>
-            <Kicker>Featured projects</Kicker>
+            <Kicker>{copy("home-kicker-4", "Featured projects")}</Kicker>
             <h2 className="mt-3 max-w-xl text-3xl font-semibold tracking-[-0.03em] text-deep sm:text-4xl">
-              From ideas to places people can use.
+              {copy("home-h2-4", "From ideas to places people can use.")}
             </h2>
           </Reveal>
           <Button asChild variant="outline">
@@ -257,23 +249,30 @@ function Home() {
           <Reveal delay={0.1}>
             <Kicker>Community & people</Kicker>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-deep sm:text-4xl">
-              Community at the heart of everything.
+              {copy("home-h2-5", "Community at the heart of everything.")}
             </h2>
             <p className="mt-5 text-base leading-relaxed text-muted">
-              Programmes, volunteering, youth, women, skills and local enterprise. The building is
-              never the whole story; the people who will run it write the brief.
+              {copy(
+                "home-p-1",
+                "Programmes, volunteering, youth, women, skills and local enterprise. The building is never the whole story; the people who will run it write the brief.",
+              )}
             </p>
             <ul className="mt-6 flex flex-wrap gap-2">
-              {["Community programmes", "Volunteering", "Youth", "Women", "Skills", "Local enterprise"].map(
-                (t) => (
-                  <li
-                    key={t}
-                    className="rounded-full bg-foam px-3 py-1.5 text-sm font-medium text-deep"
-                  >
-                    {t}
-                  </li>
-                ),
-              )}
+              {[
+                "Community programmes",
+                "Volunteering",
+                "Youth",
+                "Women",
+                "Skills",
+                "Local enterprise",
+              ].map((t) => (
+                <li
+                  key={t}
+                  className="rounded-full bg-foam px-3 py-1.5 text-sm font-medium text-deep"
+                >
+                  {t}
+                </li>
+              ))}
             </ul>
             <Button asChild className="mt-8">
               <Link to="/community">
@@ -288,9 +287,9 @@ function Home() {
       <Section>
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <Reveal>
-            <Kicker>Upcoming events</Kicker>
+            <Kicker>{copy("home-kicker-5", "Upcoming events")}</Kicker>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-deep sm:text-4xl">
-              Rooms you can walk into.
+              {copy("home-h2-6", "Rooms you can walk into.")}
             </h2>
           </Reveal>
           <Button asChild variant="outline">
@@ -333,13 +332,15 @@ function Home() {
         <div className="absolute inset-0 bg-gradient-to-r from-navy/92 via-deep/80 to-deep/40" />
         <div className="relative mx-auto grid min-h-[28rem] max-w-[88rem] items-center px-4 py-20 sm:px-6 lg:px-8">
           <Reveal className="max-w-xl text-snow">
-            <Kicker className="text-teal">Careers</Kicker>
+            <Kicker className="text-teal">{copy("home-kicker-6", "Careers")}</Kicker>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] sm:text-5xl">
-              Build your career. Build a better future.
+              {copy("home-h2-7", "Build your career. Build a better future.")}
             </h2>
             <p className="mt-4 text-snow/75">
-              Engineering · Project management · Community · and more. Paid roles, apprenticeships
-              and volunteering, all of it real work.
+              {copy(
+                "home-p-2",
+                "Engineering · Project management · Community · and more. Paid roles, apprenticeships and volunteering, all of it real work.",
+              )}
             </p>
             <Button asChild variant="onDarkSolid" className="mt-8">
               <Link to="/careers">
@@ -355,7 +356,7 @@ function Home() {
         <Reveal>
           <Kicker>Stories & updates</Kicker>
           <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-deep sm:text-4xl">
-            Field notes from the work.
+            {copy("home-h2-8", "Field notes from the work.")}
           </h2>
         </Reveal>
         <div className="mt-10 grid gap-4 md:grid-cols-3">
@@ -373,6 +374,23 @@ function Home() {
               </article>
             </Reveal>
           ))}
+        </div>
+      </Section>
+
+      <Section className="bg-snow">
+        <div className="grid gap-10 lg:grid-cols-12">
+          <Reveal className="lg:col-span-4">
+            <Kicker>{copy("home-faq-kicker", "FAQs")}</Kicker>
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-deep sm:text-4xl">
+              {copy("home-faq-title", "Questions people ask us.")}
+            </h2>
+            <Button asChild variant="outline" className="mt-6">
+              <Link to="/faq">See all questions</Link>
+            </Button>
+          </Reveal>
+          <div className="lg:col-span-8">
+            <FaqList limit={5} />
+          </div>
         </div>
       </Section>
 

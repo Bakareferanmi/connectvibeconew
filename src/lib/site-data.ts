@@ -1,6 +1,6 @@
 export const site = {
   name: "connectvibeco",
-  legalName: "Connect eVibe Trust (Incorporated Trustees)",
+  legalName: "Connect eVibe Trust",
   tagline: "Sustainable infrastructure · Community · Opportunity",
   shortTag: "Real solutions. Lasting impact.",
   description:
@@ -23,12 +23,63 @@ export const nav = [
   { label: "Contact", href: "/contact" },
 ] as const;
 
-export const social = [
+export const social: { label: string; href: string }[] = [
   { label: "Instagram", href: "https://instagram.com/connectvibeco" },
   { label: "LinkedIn", href: "https://www.linkedin.com/company/connectvibeco" },
   { label: "X", href: "https://x.com/connectvibeco" },
   { label: "YouTube", href: "https://youtube.com/@connectvibeco" },
-] as const;
+];
+
+export type Faq = { slug: string; title: string; body: string };
+
+/** Starter FAQs. The client can change, add and remove these in /admin. */
+export const faqs: Faq[] = [
+  {
+    slug: "what-is-connect-evibe-trust",
+    title: "What is Connect eVibe Trust?",
+    body: "We are a charity that connects people, ideas and resources to create resilient infrastructure and lasting social value. We work with communities, public bodies, funders and partners so that the buildings and places we deliver stay in community hands.",
+  },
+  {
+    slug: "what-do-you-do",
+    title: "What do you do?",
+    body: "Our work has four parts: sustainable infrastructure, community assets, social development and social value. In practice that means retrofit and civic buildings, skills and youth programmes, and counting the jobs, training and local spend each project creates.",
+  },
+  {
+    slug: "how-can-i-get-involved",
+    title: "How can I get involved?",
+    body: "You can volunteer, partner with us, bring a community project, start a career with us or simply come along to an open day. The Get involved page explains each route and how to start.",
+  },
+  {
+    slug: "are-your-events-free",
+    title: "Are your events free?",
+    body: "Many of our events are free. Some have a ticket price, which is shown on the event page along with the currency. Every event page tells you whether it is free or paid before you register.",
+  },
+  {
+    slug: "how-do-i-book-an-event",
+    title: "How do I book a place at an event?",
+    body: "Open the event, fill in the short form and choose how many places you need. Free events are confirmed straight away. For paid events you will be taken to checkout to pay for your places.",
+  },
+  {
+    slug: "how-can-i-donate",
+    title: "How can I donate?",
+    body: "Use the Donate button on this website. It takes you to our donation page, where you can give securely.",
+  },
+  {
+    slug: "how-do-i-apply-for-a-job",
+    title: "How do I apply for a job, apprenticeship or volunteering role?",
+    body: "Open roles are listed on the Careers page, each with what the role involves and its closing date. Choose the one that suits you and follow the instructions on it.",
+  },
+  {
+    slug: "how-do-i-contact-you",
+    title: "How do I get in touch?",
+    body: "Use the Contact page to tell us whether you want to partner, support a project, volunteer, bring a community brief or ask about a career. You can also email us using the address in the footer.",
+  },
+  {
+    slug: "how-is-my-data-used",
+    title: "What happens to the details I give you?",
+    body: "We only use your details for what you asked for, such as an event place or our newsletter. Our Privacy and cookies page explains what we collect, why, and your rights.",
+  },
+];
 
 export const approach = [
   {

@@ -7,6 +7,7 @@ import { Reveal } from "@/components/reveal";
 import { Kicker, Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { volunteerRoles } from "@/lib/site-data";
+import { copy } from "@/lib/content-store";
 
 export const Route = createFileRoute("/get-involved")({
   component: GetInvolvedPage,
@@ -62,9 +63,12 @@ function GetInvolvedPage() {
   return (
     <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
-        kicker="Get involved"
-        title="There is a door for every kind of yes."
-        lede="Partner, fund, volunteer, bring a project, start a career, or simply come to the next open day."
+        kicker={copy("get-involved-hero-kicker", "Get involved")}
+        title={copy("get-involved-hero-title", "There is a door for every kind of yes.")}
+        lede={copy(
+          "get-involved-hero-lede",
+          "Partner, fund, volunteer, bring a project, start a career, or simply come to the next open day.",
+        )}
         image="/images/hero.jpg"
         imageAlt="A sustainable neighbourhood at golden hour"
         compact
@@ -72,9 +76,9 @@ function GetInvolvedPage() {
 
       <Section>
         <Reveal>
-          <Kicker>Choose a door</Kicker>
+          <Kicker>{copy("get-involved-kicker-1", "Choose a door")}</Kicker>
           <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-[-0.03em] text-deep sm:text-4xl">
-            Real solutions. Lasting impact. You in the room.
+            {copy("get-involved-h2-1", "Real solutions. Lasting impact. You in the room.")}
           </h2>
         </Reveal>
         <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -96,9 +100,9 @@ function GetInvolvedPage() {
             />
           </Reveal>
           <Reveal delay={0.08}>
-            <Kicker>Volunteer roles</Kicker>
+            <Kicker>{copy("get-involved-kicker-2", "Volunteer roles")}</Kicker>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-deep">
-              The work is physical, social, and occasionally muddy.
+              {copy("get-involved-h2-2", "The work is physical, social, and occasionally muddy.")}
             </h2>
             <ul className="mt-6 space-y-4">
               {volunteerRoles.map((r) => (

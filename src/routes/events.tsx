@@ -9,13 +9,9 @@ import { Reveal } from "@/components/reveal";
 import { Kicker, Section } from "@/components/section";
 import { formatDate } from "@/lib/dates";
 import { eventPrice, priceLabel } from "@/lib/pricing";
-import {
-  eventKinds,
-  events,
-  pastEvents,
-  type EventKind,
-} from "@/lib/site-data";
+import { eventKinds, events, pastEvents, type EventKind } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
+import { copy } from "@/lib/content-store";
 
 export const Route = createFileRoute("/events")({
   component: EventsPage,
@@ -35,17 +31,19 @@ function EventsPage() {
   );
 
   const past = useMemo(
-    () =>
-      pastEvents.filter((e) => (kind === "all" ? true : e.kind === kind)),
+    () => pastEvents.filter((e) => (kind === "all" ? true : e.kind === kind)),
     [kind],
   );
 
   return (
     <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
-        kicker="Events"
-        title="A calendar you can actually use."
-        lede="Workshops, training, fundraising, conferences, project launches, and the days we look back on."
+        kicker={copy("events-hero-kicker", "Events")}
+        title={copy("events-hero-title", "A calendar you can actually use.")}
+        lede={copy(
+          "events-hero-lede",
+          "Workshops, training, fundraising, conferences, project launches, and the days we look back on.",
+        )}
         image="/images/greenway.jpg"
         imageAlt="A greenway path through restored parkland"
         compact
@@ -54,9 +52,9 @@ function EventsPage() {
       <Section>
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <Reveal>
-            <Kicker>Upcoming</Kicker>
+            <Kicker>{copy("events-kicker-1", "Upcoming")}</Kicker>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-deep">
-              Come as you are.
+              {copy("events-h2-1", "Come as you are.")}
             </h2>
           </Reveal>
           <div className="flex flex-wrap gap-2" role="tablist" aria-label="Event type">
@@ -81,7 +79,9 @@ function EventsPage() {
         </div>
 
         {upcoming.length === 0 ? (
-          <p className="mt-10 text-muted">Nothing in this category just now. Try another filter.</p>
+          <p className="mt-10 text-muted">
+            {copy("events-p-1", "Nothing in this category just now. Try another filter.")}
+          </p>
         ) : (
           <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {upcoming.map((e) => (
@@ -115,9 +115,9 @@ function EventsPage() {
 
       <Section className="bg-snow">
         <Reveal>
-          <Kicker>Past events</Kicker>
+          <Kicker>{copy("events-kicker-2", "Past events")}</Kicker>
           <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-deep">
-            Days that already happened, with pictures.
+            {copy("events-h2-2", "Days that already happened, with pictures.")}
           </h2>
         </Reveal>
         <div className="mt-10 grid gap-6 lg:grid-cols-3">
@@ -139,12 +139,7 @@ function EventsPage() {
               {e.gallery ? (
                 <div className="grid grid-cols-3 gap-1 px-2 pb-2">
                   {e.gallery.map((g) => (
-                    <Media
-                      key={g}
-                      src={g}
-                      alt=""
-                      className="aspect-square w-full rounded-lg"
-                    />
+                    <Media key={g} src={g} alt="" className="aspect-square w-full rounded-lg" />
                   ))}
                 </div>
               ) : null}

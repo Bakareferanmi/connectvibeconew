@@ -7,6 +7,7 @@ import { Reveal } from "@/components/reveal";
 import { Kicker, Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { projects, stats } from "@/lib/site-data";
+import { copy } from "@/lib/content-store";
 
 export const Route = createFileRoute("/impact")({
   component: ImpactPage,
@@ -36,9 +37,12 @@ function ImpactPage() {
   return (
     <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
-        kicker="Impact"
-        title="Impact that can be seen."
-        lede="Communities reached, projects delivered, people engaged, social value created, counted in public."
+        kicker={copy("impact-hero-kicker", "Impact")}
+        title={copy("impact-hero-title", "Impact that can be seen.")}
+        lede={copy(
+          "impact-hero-lede",
+          "Communities reached, projects delivered, people engaged, social value created, counted in public.",
+        )}
         image="/images/aerial.jpg"
         imageAlt="Aerial view of a neighbourhood with rooftop solar"
         compact
@@ -65,9 +69,9 @@ function ImpactPage() {
 
       <Section>
         <Reveal>
-          <Kicker>How we count</Kicker>
+          <Kicker>{copy("impact-kicker-1", "How we count")}</Kicker>
           <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-[-0.03em] text-deep sm:text-4xl">
-            Social value is a design requirement, not a report at the end.
+            {copy("impact-h2-1", "Social value is a design requirement, not a report at the end.")}
           </h2>
         </Reveal>
         <div className="mt-10 grid gap-4 md:grid-cols-2">
@@ -90,9 +94,9 @@ function ImpactPage() {
             />
           </Reveal>
           <Reveal delay={0.08}>
-            <Kicker>This year</Kicker>
+            <Kicker>{copy("impact-kicker-2", "This year")}</Kicker>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-deep">
-              A snapshot, not a victory lap.
+              {copy("impact-h2-2", "A snapshot, not a victory lap.")}
             </h2>
             <ul className="mt-6 space-y-4 text-sm leading-relaxed text-muted">
               <li>
@@ -118,7 +122,7 @@ function ImpactPage() {
 
       <Section>
         <Reveal>
-          <Kicker>Places behind the numbers</Kicker>
+          <Kicker>{copy("impact-kicker-3", "Places behind the numbers")}</Kicker>
         </Reveal>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {projects.map((p) => (

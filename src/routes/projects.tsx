@@ -6,6 +6,7 @@ import { Reveal } from "@/components/reveal";
 import { Kicker, Section } from "@/components/section";
 import { projects, type ProjectStatus } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
+import { copy } from "@/lib/content-store";
 
 export const Route = createFileRoute("/projects")({
   component: ProjectsPage,
@@ -22,9 +23,12 @@ function ProjectsPage() {
   return (
     <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
-        kicker="Projects"
-        title="From ideas to places people can use."
-        lede="Retrofit, civic buildings, green infrastructure and neighbourhoods still on the drawing board, all of them specified with the people who will live there."
+        kicker={copy("projects-hero-kicker", "Projects")}
+        title={copy("projects-hero-title", "From ideas to places people can use.")}
+        lede={copy(
+          "projects-hero-lede",
+          "Retrofit, civic buildings, green infrastructure and neighbourhoods still on the drawing board, all of them specified with the people who will live there.",
+        )}
         image="/images/housing.jpg"
         imageAlt="Climate-resilient community housing with timber cladding and rain gardens"
         compact
@@ -32,9 +36,9 @@ function ProjectsPage() {
 
       <Section>
         <Reveal>
-          <Kicker>Portfolio</Kicker>
+          <Kicker>{copy("projects-kicker-1", "Portfolio")}</Kicker>
           <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-deep">
-            Four places. One way of working.
+            {copy("projects-h2-1", "Four places. One way of working.")}
           </h2>
         </Reveal>
         <div className="mt-10 grid gap-5">

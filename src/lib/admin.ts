@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import type { ContentType } from "@/lib/content-store";
 
-const typeSchema = z.enum(["event", "project", "job"]);
+const typeSchema = z.enum(["event", "project", "job", "faq", "social", "copy"]);
 
 /** Is the admin area set up, and is this visitor logged in? */
 export const adminSession = createServerFn({ method: "GET" }).handler(async () => {

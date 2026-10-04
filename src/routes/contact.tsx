@@ -4,6 +4,7 @@ import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import { Section } from "@/components/section";
 import { site, social } from "@/lib/site-data";
+import { copy } from "@/lib/content-store";
 
 type ContactSearch = {
   intent?: string;
@@ -23,9 +24,12 @@ function ContactPage() {
   return (
     <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
-        kicker="Contact"
-        title="Six doors. One team."
-        lede="Partner, support a project, volunteer, bring a community brief, ask about a career, or just say hello."
+        kicker={copy("contact-hero-kicker", "Contact")}
+        title={copy("contact-hero-title", "Six doors. One team.")}
+        lede={copy(
+          "contact-hero-lede",
+          "Partner, support a project, volunteer, bring a community brief, ask about a career, or just say hello.",
+        )}
         image="/images/community-centre.jpg"
         imageAlt="A civic community building and public square"
         compact
@@ -34,9 +38,7 @@ function ContactPage() {
       <Section>
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <Reveal className="lg:col-span-4">
-            <h2 className="text-2xl font-semibold tracking-tight text-deep">
-              {site.legalName}
-            </h2>
+            <h2 className="text-2xl font-semibold tracking-tight text-deep">{site.legalName}</h2>
             <p className="mt-3 text-sm leading-relaxed text-muted">{site.charityLine}</p>
             <a
               href={`mailto:${site.email}`}
@@ -45,7 +47,7 @@ function ContactPage() {
               {site.email}
             </a>
             <p className="mt-8 text-xs font-semibold uppercase tracking-[0.18em] text-ocean">
-              Also
+              {copy("contact-p-1", "Also")}
             </p>
             <ul className="mt-3 space-y-2 text-sm">
               <li>

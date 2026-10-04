@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { applyContent, type SiteContent } from "@/lib/content-store";
+import { applyContent, EMPTY_CONTENT, type SiteContent } from "@/lib/content-store";
 
 /** Public: the managed content (or nulls to keep the built-in content). */
 export const getSiteContent = createServerFn({ method: "GET" }).handler(
@@ -31,7 +31,7 @@ export async function loadContent(force = false): Promise<SiteContent> {
     })
     .catch((err) => {
       console.error("[content] load failed:", err);
-      return last ?? { events: null, projects: null, jobs: null };
+      return last ?? EMPTY_CONTENT;
     })
     .finally(() => {
       inflight = null;

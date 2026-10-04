@@ -8,6 +8,7 @@ import { Kicker, Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { pillars } from "@/lib/site-data";
+import { copy } from "@/lib/content-store";
 
 export const Route = createFileRoute("/what-we-do")({
   component: WhatWeDoPage,
@@ -18,9 +19,12 @@ function WhatWeDoPage() {
   return (
     <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
-        kicker="What we do"
-        title="Build. Connect. Empower. Sustain."
-        lede="Four practices, one trust. Sustainable infrastructure, community assets, social development and measurable social value."
+        kicker={copy("what-we-do-hero-kicker", "What we do")}
+        title={copy("what-we-do-hero-title", "Build. Connect. Empower. Sustain.")}
+        lede={copy(
+          "what-we-do-hero-lede",
+          "Four practices, one trust. Sustainable infrastructure, community assets, social development and measurable social value.",
+        )}
         image="/images/solar.jpg"
         imageAlt="Rows of solar panels in green countryside"
         compact
@@ -34,11 +38,7 @@ function WhatWeDoPage() {
         >
           <div className="mx-auto grid max-w-[88rem] items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
             <Reveal className={i % 2 === 1 ? "lg:order-2" : undefined}>
-              <Media
-                src={p.image}
-                alt={p.title}
-                className="aspect-[4/3] w-full rounded-3xl"
-              />
+              <Media src={p.image} alt={p.title} className="aspect-[4/3] w-full rounded-3xl" />
             </Reveal>
             <Reveal delay={0.08}>
               <Kicker>
@@ -63,9 +63,9 @@ function WhatWeDoPage() {
 
       <Section className="bg-snow">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <Kicker>From brief to belonging</Kicker>
+          <Kicker>{copy("what-we-do-kicker-1", "From brief to belonging")}</Kicker>
           <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-deep">
-            A simple sequence. Held carefully.
+            {copy("what-we-do-h2-1", "A simple sequence. Held carefully.")}
           </h2>
         </Reveal>
         <ol className="mx-auto mt-12 grid max-w-4xl gap-4 sm:grid-cols-2">
@@ -73,7 +73,11 @@ function WhatWeDoPage() {
             { n: "01", t: "Listen", d: "Resident workshops, data, and a walk of the street." },
             { n: "02", t: "Specify", d: "A brief the community can defend, cost, carbon, jobs." },
             { n: "03", t: "Deliver", d: "Local labour, trainees on site, neighbours as clients." },
-            { n: "04", t: "Belong", d: "Ownership, maintenance, and skills that stay when we leave." },
+            {
+              n: "04",
+              t: "Belong",
+              d: "Ownership, maintenance, and skills that stay when we leave.",
+            },
           ].map((s) => (
             <li key={s.n} className="rounded-2xl bg-paper p-6">
               <p className="text-xs font-semibold tracking-[0.18em] text-ocean">{s.n}</p>

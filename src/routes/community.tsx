@@ -7,6 +7,7 @@ import { Reveal } from "@/components/reveal";
 import { Kicker, Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { communityProgrammes, stories, volunteerRoles } from "@/lib/site-data";
+import { copy } from "@/lib/content-store";
 
 export const Route = createFileRoute("/community")({
   component: CommunityPage,
@@ -17,9 +18,12 @@ function CommunityPage() {
   return (
     <main id="main" tabIndex={-1} className="outline-none">
       <PageHero
-        kicker="Community"
-        title="More than a programme page."
-        lede="Initiatives, volunteering, local partnerships, youth, skills and the stories that prove the work is human."
+        kicker={copy("community-hero-kicker", "Community")}
+        title={copy("community-hero-title", "More than a programme page.")}
+        lede={copy(
+          "community-hero-lede",
+          "Initiatives, volunteering, local partnerships, youth, skills and the stories that prove the work is human.",
+        )}
         image="/images/skills.jpg"
         imageAlt="People in a bright community skills classroom"
         compact
@@ -39,9 +43,9 @@ function CommunityPage() {
 
       <Section>
         <Reveal>
-          <Kicker>Programmes</Kicker>
+          <Kicker>{copy("community-kicker-1", "Programmes")}</Kicker>
           <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-[-0.03em] text-deep sm:text-4xl">
-            People places prosperity, in that order.
+            {copy("community-h2-1", "People places prosperity, in that order.")}
           </h2>
         </Reveal>
         <div className="mt-10 grid gap-4 md:grid-cols-2">
@@ -66,13 +70,15 @@ function CommunityPage() {
       <Section className="bg-snow">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal>
-            <Kicker>Volunteering</Kicker>
+            <Kicker>{copy("community-kicker-2", "Volunteering")}</Kicker>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-deep">
-              A few hours that compound.
+              {copy("community-h2-2", "A few hours that compound.")}
             </h2>
             <p className="mt-4 leading-relaxed text-muted">
-              Open days, planting, mentoring, events. We train, we feed you, we do not waste your
-              time. Under-18s are welcome with an accompanying adult on family days.
+              {copy(
+                "community-p-1",
+                "Open days, planting, mentoring, events. We train, we feed you, we do not waste your time. Under-18s are welcome with an accompanying adult on family days.",
+              )}
             </p>
             <Button asChild className="mt-8">
               <Link to="/contact" search={{ intent: "volunteer" }}>
@@ -94,15 +100,18 @@ function CommunityPage() {
 
       <Section>
         <Reveal>
-          <Kicker>Partnerships</Kicker>
+          <Kicker>{copy("community-kicker-3", "Partnerships")}</Kicker>
           <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-[-0.03em] text-deep sm:text-4xl">
-            Local authorities, housing providers, colleges, clinics, and the group that already
-            meets in the hall.
+            {copy(
+              "community-h2-3",
+              "Local authorities, housing providers, colleges, clinics, and the group that already meets in the hall.",
+            )}
           </h2>
           <p className="mt-5 max-w-2xl leading-relaxed text-muted">
-            We do not land in a neighbourhood and invent a network. We join the one that exists,
-            then add capital, design and delivery muscle. If you are already doing the work, we
-            would rather sit beside you than in front of you.
+            {copy(
+              "community-p-2",
+              "We do not land in a neighbourhood and invent a network. We join the one that exists, then add capital, design and delivery muscle. If you are already doing the work, we would rather sit beside you than in front of you.",
+            )}
           </p>
           <Button asChild variant="outline" className="mt-8">
             <Link to="/contact" search={{ intent: "partner" }}>
@@ -114,9 +123,9 @@ function CommunityPage() {
 
       <Section className="bg-foam">
         <Reveal>
-          <Kicker>Community stories</Kicker>
+          <Kicker>{copy("community-kicker-4", "Community stories")}</Kicker>
           <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-deep">
-            What it felt like, not just what we counted.
+            {copy("community-h2-4", "What it felt like, not just what we counted.")}
           </h2>
         </Reveal>
         <div className="mt-10 grid gap-4 md:grid-cols-3">

@@ -17,7 +17,8 @@ import {
   adminSubmissions,
   adminUploadImage,
 } from "@/lib/admin";
-import { defaults, type ContentType } from "@/lib/content-store";
+import { copySlots } from "@/lib/copy-slots.generated";
+import { defaults, SITE_SLOTS, type ContentType } from "@/lib/content-store";
 import { loadContent } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
@@ -86,12 +87,24 @@ const FIELDS: Record<ContentType, Field[]> = {
     { key: "summary", label: "Summary", kind: "textarea", rows: 4, required: true },
     { key: "points", label: "Requirements (one per line)", kind: "lines", rows: 5 },
   ],
+  faq: [
+    { key: "title", label: "Question", kind: "text", required: true },
+    { key: "body", label: "Answer", kind: "textarea", rows: 6, required: true },
+  ],
+  social: [
+    { key: "title", label: "Name (e.g. Instagram, Facebook, LinkedIn, X, YouTube)", kind: "text", required: true, help: "Instagram, Facebook, LinkedIn, X, YouTube and GitHub get their own icon. Anything else shows a globe." },
+    { key: "href", label: "Link to the page", kind: "text", required: true, help: "The full link, starting with https://" },
+  ],
+  copy: [],
 };
 
 const LABELS: Record<ContentType, { plural: string; singular: string }> = {
   event: { plural: "Events", singular: "event" },
   project: { plural: "Projects", singular: "project" },
   job: { plural: "Jobs", singular: "job" },
+  faq: { plural: "FAQs", singular: "question" },
+  social: { plural: "Social links", singular: "social link" },
+  copy: { plural: "Page text", singular: "text" },
 };
 
 const knownImages = Array.from(
@@ -371,6 +384,9 @@ function Dashboard({ persistent }: { persistent: boolean }) {
     { id: "event", label: "Events" },
     { id: "project", label: "Projects" },
     { id: "job", label: "Jobs" },
+    { id: "faq", label: "FAQs" },
+    { id: "social", label: "Social links" },
+    { id: "copy", label: "Page text" },
   ];
 
   return (
@@ -404,6 +420,8 @@ function Dashboard({ persistent }: { persistent: boolean }) {
       <div className="mt-8">
         {tab === "signups" ? (
           <Signups />
+        ) : content && tab === "copy" ? (
+          <CopyEditor state={content.copy} onChanged={afterChange} />
         ) : content ? (
           <ContentManager
             key={tab}
@@ -617,6 +635,8 @@ function ContentManager({
 }
 
 function subline(type: ContentType, d: Json): string {
+  if (type === "faq") return String(d.body ?? "").slice(0, 110);
+  if (type === "social") return String(d.href ?? "");
   if (type === "event") return `${String(d.date)} · ${String(d.place)}, ${String(d.city)}`;
   if (type === "project") return `${String(d.status)} · ${String(d.place)}`;
   return `${String(d.kind)} · ${String(d.location)} · closes ${String(d.closing)}`;
@@ -710,6 +730,189 @@ function FieldInput({
         />
       )}
       {f.help ? <p className="text-xs text-muted">{f.help}</p> : null}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Page text                                                           */
+/* ------------------------------------------------------------------ */
+
+type CopyRow = { id: string; group: string; original: string };
+
+const SITE_GROUP = "Site details (footer, About, Contact, Privacy)";
+
+function CopyEditor({
+  state,
+  onChanged,
+}: {
+  state: AdminContent["copy"];
+  onChanged: () => Promise<void>;
+}) {
+  const overrides = useMemo(() => {
+    const out: Record<string, string> = {};
+    for (const i of state.items) {
+      const d = JSON.parse(i.json) as { text?: string };
+      if (typeof d.text === "string") out[i.slug] = d.text;
+    }
+    return out;
+  }, [state.items]);
+
+  const [drafts, setDrafts] = useState<Record<string, string>>({});
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [q, setQ] = useState("");
+
+  const groups = useMemo(() => {
+    const rows: CopyRow[] = [
+      ...SITE_SLOTS.map((s) => ({ id: s.id, group: SITE_GROUP, original: defaults.site[s.key] })),
+      ...copySlots.map((s) => ({ id: s.id, group: s.group, original: s.text })),
+    ];
+    const needle = q.trim().toLowerCase();
+    const map = new Map<string, CopyRow[]>();
+    for (const r of rows) {
+      const shown = overrides[r.id] ?? r.original;
+      if (needle && !`${shown} ${r.original} ${r.group}`.toLowerCase().includes(needle)) continue;
+      map.set(r.group, [...(map.get(r.group) ?? []), r]);
+    }
+    return [...map.entries()];
+  }, [overrides, q]);
+
+  const labelFor = (id: string) => SITE_SLOTS.find((s) => s.id === id)?.label;
+
+  async function save(r: CopyRow) {
+    const text = (drafts[r.id] ?? overrides[r.id] ?? r.original).trim();
+    setBusyId(r.id);
+    try {
+      if (text === r.original && !(r.id in overrides)) {
+        toast.message("No change to save.");
+      } else if (text === r.original) {
+        await adminDelete({ data: { type: "copy", slug: r.id } });
+        toast.success("Back to the original wording.");
+      } else {
+        await adminSave({
+          data: { type: "copy", item: { slug: r.id, text }, originalSlug: r.id in overrides ? r.id : null, position: null },
+        });
+        toast.success("Saved.");
+      }
+      setDrafts((d) => {
+        const { [r.id]: _gone, ...rest } = d;
+        return rest;
+      });
+      await onChanged();
+    } catch (err) {
+      toast.error(errorMessage(err));
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  async function reset(r: CopyRow) {
+    setBusyId(r.id);
+    try {
+      await adminDelete({ data: { type: "copy", slug: r.id } });
+      setDrafts((d) => {
+        const { [r.id]: _gone, ...rest } = d;
+        return rest;
+      });
+      toast.success("Back to the original wording.");
+      await onChanged();
+    } catch (err) {
+      toast.error(errorMessage(err));
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  return (
+    <div>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 className="text-xl font-semibold text-deep">Page text</h2>
+          <p className="mt-1 max-w-xl text-sm text-muted">
+            Change the headings and paragraphs on each page. Edit the box, then press Save. “Reset”
+            puts the original wording back. Edited text is marked.
+          </p>
+        </div>
+        <div className="w-full sm:w-72">
+          <Label htmlFor="copy-search" className="sr-only">
+            Search the text
+          </Label>
+          <Input
+            id="copy-search"
+            placeholder="Search the text..."
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="mt-6 grid gap-4">
+        {groups.map(([group, rows]) => (
+          <details
+            key={group}
+            open={!!q || group === SITE_GROUP}
+            className="rounded-2xl bg-snow p-4 shadow-[var(--shadow-border)] sm:p-5"
+          >
+            <summary className="cursor-pointer text-base font-semibold text-deep">
+              {group} <span className="font-normal text-muted">({rows.length})</span>
+            </summary>
+            <div className="mt-4 grid gap-5">
+              {rows.map((r) => {
+                const edited = r.id in overrides;
+                const value = drafts[r.id] ?? overrides[r.id] ?? r.original;
+                const changed = value.trim() !== (overrides[r.id] ?? r.original);
+                const long = value.length > 90;
+                return (
+                  <div key={r.id} data-copy-row={r.id} className="grid gap-2">
+                    <Label htmlFor={`c-${r.id}`} className="flex flex-wrap items-center gap-2">
+                      {labelFor(r.id) ?? r.id}
+                      {edited ? (
+                        <span className="rounded-full bg-teal/30 px-2 py-0.5 text-xs font-medium text-deep">
+                          Edited
+                        </span>
+                      ) : null}
+                    </Label>
+                    {long ? (
+                      <Textarea
+                        id={`c-${r.id}`}
+                        rows={Math.min(8, Math.ceil(value.length / 80) + 1)}
+                        value={value}
+                        onChange={(e) => setDrafts((d) => ({ ...d, [r.id]: e.target.value }))}
+                      />
+                    ) : (
+                      <Input
+                        id={`c-${r.id}`}
+                        value={value}
+                        onChange={(e) => setDrafts((d) => ({ ...d, [r.id]: e.target.value }))}
+                      />
+                    )}
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        disabled={busyId === r.id || !changed}
+                        onClick={() => save(r)}
+                      >
+                        {busyId === r.id ? "Saving..." : "Save"}
+                      </Button>
+                      {edited ? (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          disabled={busyId === r.id}
+                          onClick={() => reset(r)}
+                        >
+                          Reset
+                        </Button>
+                      ) : null}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </details>
+        ))}
+        {groups.length === 0 ? <p className="text-muted">Nothing matches that search.</p> : null}
+      </div>
     </div>
   );
 }
