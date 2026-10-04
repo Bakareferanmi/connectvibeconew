@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { GA_ID } from "@/lib/analytics";
 
 const KEY = "connectvibe.cookie-consent";
 export const COOKIE_SETTINGS_EVENT = "connectvibe:cookie-settings";
+export const CONSENT_EVENT = "connectvibe:consent-changed";
 
 export type Consent = "accepted" | "declined" | null;
 
@@ -34,6 +36,7 @@ export function CookieNotice() {
     } catch {
       /* storage unavailable: the choice just won't be remembered */
     }
+    window.dispatchEvent(new Event(CONSENT_EVENT));
     setVisible(false);
   }
 
@@ -46,8 +49,10 @@ export function CookieNotice() {
       className="fixed inset-x-3 bottom-3 z-[60] mx-auto max-w-xl rounded-2xl bg-navy p-5 text-snow shadow-[var(--shadow-lift)] ring-1 ring-snow/15 sm:left-6 sm:right-auto sm:mx-0"
     >
       <p className="text-sm leading-relaxed text-snow/85">
-        This site uses only the cookies and storage it needs to work. If we add analytics,
-        we’ll switch it on only if you accept. Read our{" "}
+        {GA_ID
+          ? "We’d like to use Google Analytics cookies to understand how the site is used and improve it. They are switched on only if you accept."
+          : "This site uses only the cookies and storage it needs to work."}{" "}
+        Read our{" "}
         <a href="/privacy" className="text-teal underline underline-offset-2">
           privacy and cookie notice
         </a>

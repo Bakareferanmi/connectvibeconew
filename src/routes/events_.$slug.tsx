@@ -7,19 +7,32 @@ import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import { Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
+import { loadContent } from "@/lib/content";
 import { formatDate } from "@/lib/dates";
+import { shareMeta } from "@/lib/seo";
 import { getEvent } from "@/lib/site-data";
 
 export const Route = createFileRoute("/events_/$slug")({
   component: EventDetailPage,
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
+    await loadContent(); // events may have been added or edited in /admin
     const event = getEvent(params.slug);
     if (!event) throw notFound();
     return { event };
   },
-  head: ({ loaderData }) => ({
-    meta: [{ title: `${loaderData?.event.title ?? "Event"} | connectvibeco` }],
-  }),
+  head: ({ loaderData }) => {
+    const e = loaderData?.event;
+    if (!e) return { meta: [{ title: "Event | connectvibeco" }] };
+    return {
+      meta: shareMeta({
+        title: `${e.title} | connectvibeco`,
+        description: e.summary,
+        path: `/events/${e.slug}`,
+        image: `/og/event/${e.slug}`,
+        imageAlt: e.title,
+      }),
+    };
+  },
 });
 
 function EventDetailPage() {

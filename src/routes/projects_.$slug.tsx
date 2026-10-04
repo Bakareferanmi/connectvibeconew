@@ -6,18 +6,31 @@ import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import { Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
+import { loadContent } from "@/lib/content";
+import { shareMeta } from "@/lib/seo";
 import { getProject, projects } from "@/lib/site-data";
 
 export const Route = createFileRoute("/projects_/$slug")({
   component: ProjectDetailPage,
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
+    await loadContent(); // projects may have been added or edited in /admin
     const project = getProject(params.slug);
     if (!project) throw notFound();
     return { project };
   },
-  head: ({ loaderData }) => ({
-    meta: [{ title: `${loaderData?.project.title ?? "Project"} | connectvibeco` }],
-  }),
+  head: ({ loaderData }) => {
+    const p = loaderData?.project;
+    if (!p) return { meta: [{ title: "Project | connectvibeco" }] };
+    return {
+      meta: shareMeta({
+        title: `${p.title} | connectvibeco`,
+        description: p.summary,
+        path: `/projects/${p.slug}`,
+        image: `/og/project/${p.slug}`,
+        imageAlt: p.title,
+      }),
+    };
+  },
 });
 
 function ProjectDetailPage() {

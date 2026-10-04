@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { GA_ID } from "@/lib/analytics";
 import { site } from "@/lib/site-data";
 
 export const Route = createFileRoute("/privacy")({
@@ -72,9 +73,12 @@ function PrivacyPage() {
         <Block title="Who we share it with">
           <p>
             We do not sell your information. We use trusted providers to run the site and deliver
-            messages: our website host, an email delivery service that sends form submissions to
-            our team, and Google Fonts, which serves the typeface used on this site. These
-            providers process data on our behalf or under their own privacy terms.
+            messages: our website host, a database provider that stores sign-ups, and an email
+            delivery service that sends form submissions to our team.
+            {GA_ID
+              ? " If you accept analytics cookies, Google Analytics (Google LLC) also receives information about how you use the site."
+              : ""}{" "}
+            These providers process data on our behalf or under their own privacy terms.
           </p>
         </Block>
 
@@ -107,13 +111,29 @@ function PrivacyPage() {
         </Block>
 
         <Block title="Cookies and similar technologies">
-          <p>
-            This site uses only the cookies and browser storage it needs to work, plus a small
-            record of your choice on the cookie notice. We do not currently run analytics or
-            advertising cookies. If that changes, we will update this notice and switch non-essential
-            tools on only if you accept them. You can change your choice at any time using “Cookie
-            settings” in the footer.
-          </p>
+          {GA_ID ? (
+            <>
+              <p>
+                This site uses the cookies and browser storage it needs to work, plus a small
+                record of your choice on the cookie notice.
+              </p>
+              <p>
+                If you click “Accept”, we also use Google Analytics 4, which sets cookies
+                (such as <code>_ga</code>) to count visits and see which pages are useful. The
+                information is used in aggregate to improve the site. If you decline, no analytics
+                cookies are set. You can change your choice at any time using “Cookie settings”
+                in the footer.
+              </p>
+            </>
+          ) : (
+            <p>
+              This site uses only the cookies and browser storage it needs to work, plus a small
+              record of your choice on the cookie notice. We do not currently run analytics or
+              advertising cookies. If that changes, we will update this notice and switch
+              non-essential tools on only if you accept them. You can change your choice at any
+              time using “Cookie settings” in the footer.
+            </p>
+          )}
         </Block>
 
         <Block title="Changes to this notice">

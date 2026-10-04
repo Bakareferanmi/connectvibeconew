@@ -1,6 +1,13 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Poppins, self-hosted (no request to Google Fonts) */
+@import "@fontsource/poppins/latin-400.css";
+@import "@fontsource/poppins/latin-500.css";
+@import "@fontsource/poppins/latin-600.css";
+@import "@fontsource/poppins/latin-700.css";
+@import "@fontsource/poppins/latin-800.css";
+
 @theme {
   --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
 

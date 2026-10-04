@@ -8,7 +8,36 @@
  *
  * Until they are set, local development just logs the message to the terminal.
  */
+import { dbSource, getSql } from "@/lib/db";
 import { env } from "@/lib/env.server";
+
+/** True when saved data will actually persist (a real database, or local dev). */
+export function isPersistent(): boolean {
+  return dbSource === "neon" || process.env.NODE_ENV !== "production";
+}
+
+/**
+ * Store a form submission in the database (for the /admin sign-ups dashboard).
+ * Returns true if it was stored somewhere durable.
+ */
+export async function saveSubmission(
+  kind: "newsletter" | "event" | "contact",
+  name: string | null,
+  email: string,
+  details: Record<string, unknown>,
+): Promise<boolean> {
+  if (!isPersistent()) return false;
+  const sql = await getSql();
+  if (kind === "newsletter") {
+    const exists = await sql`
+      select 1 from submissions where kind = 'newsletter' and lower(email) = lower(${email}) limit 1`;
+    if (exists.length) return true;
+  }
+  await sql`
+    insert into submissions (kind, name, email, details)
+    values (${kind}, ${name}, ${email}, ${JSON.stringify(details)}::jsonb)`;
+  return true;
+}
 
 export function escapeHtml(value: string): string {
   return value
