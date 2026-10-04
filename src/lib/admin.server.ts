@@ -115,7 +115,14 @@ const imagePath = z
   .trim()
   .min(1, "Choose an image")
   .max(400)
-  .refine((v) => v.startsWith("/") || v.startsWith("https://"), "Use /images/... or an https:// link");
+  .superRefine((v, ctx) => {
+    if (!(v.startsWith("/") || v.startsWith("https://"))) {
+      ctx.addIssue({
+        code: "custom",
+        message: `"${v.slice(0, 40)}" isn't an image address. Use /images/name.jpg or a full https:// link`,
+      });
+    }
+  });
 const lines = z.array(z.string().trim().min(1).max(300)).max(40);
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Use YYYY-MM-DD");
 

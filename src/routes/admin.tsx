@@ -119,6 +119,15 @@ function toValues(type: ContentType, item: Json | null): Record<string, string> 
   return values;
 }
 
+/** Tidy an image address: "hero.jpg" and "images/hero.jpg" both become "/images/hero.jpg". */
+function normImage(v: string): string {
+  const s = v.trim().replace(/^["'`]+|["'`,;]+$/g, "").trim();
+  if (!s || s.startsWith("/") || /^https?:\/\//i.test(s)) return s;
+  if (/^images\//i.test(s)) return `/${s}`;
+  if (/^[\w.\- ]+\.(jpe?g|png|webp|avif|gif|svg)$/i.test(s)) return `/images/${s.trim()}`;
+  return s;
+}
+
 function fromValues(type: ContentType, values: Record<string, string>): Json {
   const out: Json = { slug: values.slug.trim() };
   for (const f of FIELDS[type]) {
@@ -126,7 +135,13 @@ function fromValues(type: ContentType, values: Record<string, string>): Json {
     if (f.showIf && values[f.showIf.key] !== f.showIf.value) continue; // hidden field
     out[f.key] =
       f.kind === "lines"
-        ? raw.split("\n").map((l) => l.trim()).filter(Boolean)
+        ? raw
+            .split(/[\r\n]+/)
+            .flatMap((l) => (f.key === "gallery" ? l.split(/\s*,\s*|\s{2,}/) : [l]))
+            .map((l) => (f.key === "gallery" ? normImage(l) : l.trim()))
+            .filter(Boolean)
+        : f.kind === "image"
+          ? normImage(raw)
         : f.kind === "number"
           ? raw.trim() === "" ? undefined : Number(raw)
           : raw.trim();
