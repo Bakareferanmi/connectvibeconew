@@ -1,6 +1,4 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
-import { AuthProvider } from "@/lib/auth/provider";
-import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { NotFound } from "@/components/not-found";
 import { SiteShell } from "@/components/site-shell";
 import { loadContent } from "@/lib/content";
@@ -22,8 +20,7 @@ export const Route = createRootRoute({
     links: [
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "stylesheet", href: appCss },
-      { rel: "manifest", href: "/__grok/manifest.webmanifest" },
-      { rel: "apple-touch-icon", href: "/__grok/icon-180.png" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],
   }),
   notFoundComponent: NotFound,
@@ -41,12 +38,9 @@ function RootDocument() {
         <HeadContent />
       </head>
       <body>
-        <PreviewHostBridge />
-        <AuthProvider>
-          <SiteShell>
-            <Outlet />
-          </SiteShell>
-        </AuthProvider>
+        <SiteShell>
+          <Outlet />
+        </SiteShell>
         <Scripts />
       </body>
     </html>

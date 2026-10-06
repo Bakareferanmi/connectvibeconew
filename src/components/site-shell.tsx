@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { Analytics } from "@/components/analytics";
 import { CookieNotice } from "@/components/cookie-notice";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -18,7 +17,6 @@ export function SiteShell({ children }: { children: ReactNode }) {
       {children}
       <SiteFooter />
       <CookieNotice />
-      <Analytics />
       <Toaster
         position="bottom-right"
         toastOptions={{
