@@ -7,10 +7,18 @@ import { Kicker, Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { approach, site } from "@/lib/site-data";
 import { copy } from "@/lib/content-store";
+import { breadcrumbJsonLd, pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
   component: AboutPage,
-  head: () => ({ meta: [{ title: "About | connectvibeco" }] }),
+  head: () =>
+    pageHead({
+      title: "About | connectvibeco",
+      description:
+        "Who Connect eVibe Trust is, how the trust is governed, and how we work with communities, public bodies, funders and partners.",
+      path: "/about",
+      jsonLd: breadcrumbJsonLd([{ name: "About", path: "/about" }]),
+    }),
 });
 
 const values = [

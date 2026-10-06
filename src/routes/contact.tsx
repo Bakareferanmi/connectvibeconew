@@ -3,8 +3,10 @@ import { ContactForm } from "@/components/contact-form";
 import { PageHero } from "@/components/page-hero";
 import { Reveal } from "@/components/reveal";
 import { Section } from "@/components/section";
+import { socialIconFor } from "@/components/social-icons";
 import { site, social } from "@/lib/site-data";
 import { copy } from "@/lib/content-store";
+import { breadcrumbJsonLd, pageHead } from "@/lib/seo";
 
 type ContactSearch = {
   intent?: string;
@@ -15,7 +17,14 @@ export const Route = createFileRoute("/contact")({
   validateSearch: (search: Record<string, unknown>): ContactSearch => ({
     intent: typeof search.intent === "string" ? search.intent : undefined,
   }),
-  head: () => ({ meta: [{ title: "Contact | connectvibeco" }] }),
+  head: () =>
+    pageHead({
+      title: "Contact | connectvibeco",
+      description:
+        "Get in touch with Connect eVibe Trust about partnerships, projects, events, volunteering and press enquiries.",
+      path: "/contact",
+      jsonLd: breadcrumbJsonLd([{ name: "Contact", path: "/contact" }]),
+    }),
 });
 
 function ContactPage() {
@@ -67,17 +76,21 @@ function ContactPage() {
               </li>
             </ul>
             <div className="mt-8 flex flex-wrap gap-2">
-              {social.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex h-10 items-center rounded-full bg-snow px-3.5 text-sm font-medium text-deep shadow-[var(--shadow-border)] hover:bg-foam"
-                >
-                  {s.label}
-                </a>
-              ))}
+              {social.map((s) => {
+                const Icon = socialIconFor(s.label, s.href);
+                return (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex h-10 items-center gap-2 rounded-full bg-snow px-3.5 text-sm font-medium text-deep shadow-[var(--shadow-border)] hover:bg-foam"
+                  >
+                    <Icon className="size-4" aria-hidden="true" />
+                    {s.label}
+                  </a>
+                );
+              })}
             </div>
           </Reveal>
           <div className="lg:col-span-8">

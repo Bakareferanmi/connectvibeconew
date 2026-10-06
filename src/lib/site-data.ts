@@ -28,6 +28,8 @@ export const social: { label: string; href: string }[] = [
   { label: "LinkedIn", href: "https://www.linkedin.com/company/connectvibeco" },
   { label: "X", href: "https://x.com/connectvibeco" },
   { label: "YouTube", href: "https://youtube.com/@connectvibeco" },
+  // Placeholder handle: set the real TikTok link in /admin, Social links.
+  { label: "TikTok", href: "https://www.tiktok.com/@connectvibeco" },
 ];
 
 export type Faq = { slug: string; title: string; body: string };

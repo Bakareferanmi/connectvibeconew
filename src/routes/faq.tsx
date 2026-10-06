@@ -6,7 +6,7 @@ import { Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { loadContent } from "@/lib/content";
 import { copy } from "@/lib/content-store";
-import { shareMeta } from "@/lib/seo";
+import { breadcrumbJsonLd, pageHead } from "@/lib/seo";
 import { faqs } from "@/lib/site-data";
 
 export const Route = createFileRoute("/faq")({
@@ -15,31 +15,30 @@ export const Route = createFileRoute("/faq")({
     await loadContent(); // questions may have been edited in /admin
     return { faqs: faqs.map((f) => ({ q: f.title, a: f.body })) };
   },
-  head: ({ loaderData }) => ({
-    meta: shareMeta({
+  head: ({ loaderData }) =>
+    pageHead({
       title: "FAQs | connectvibeco",
       description:
         "Answers to common questions about our work, events, giving and getting involved.",
       path: "/faq",
+      // Lets search engines and AI assistants show the questions directly in answers.
+      jsonLd: [
+        breadcrumbJsonLd([{ name: "FAQs", path: "/faq" }]),
+        ...(loaderData?.faqs.length
+          ? [
+              {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                mainEntity: loaderData.faqs.map((f) => ({
+                  "@type": "Question",
+                  name: f.q,
+                  acceptedAnswer: { "@type": "Answer", text: f.a },
+                })),
+              },
+            ]
+          : []),
+      ],
     }),
-    // Lets search engines show the questions directly in results.
-    scripts: loaderData?.faqs.length
-      ? [
-          {
-            type: "application/ld+json",
-            children: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: loaderData.faqs.map((f) => ({
-                "@type": "Question",
-                name: f.q,
-                acceptedAnswer: { "@type": "Answer", text: f.a },
-              })),
-            }),
-          },
-        ]
-      : [],
-  }),
 });
 
 function FaqPage() {

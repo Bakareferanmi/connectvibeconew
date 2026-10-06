@@ -7,7 +7,7 @@ import { Reveal } from "@/components/reveal";
 import { Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { loadContent } from "@/lib/content";
-import { shareMeta } from "@/lib/seo";
+import { breadcrumbJsonLd, pageHead } from "@/lib/seo";
 import { getProject, projects } from "@/lib/site-data";
 
 export const Route = createFileRoute("/projects_/$slug")({
@@ -21,15 +21,17 @@ export const Route = createFileRoute("/projects_/$slug")({
   head: ({ loaderData }) => {
     const p = loaderData?.project;
     if (!p) return { meta: [{ title: "Project | connectvibeco" }] };
-    return {
-      meta: shareMeta({
-        title: `${p.title} | connectvibeco`,
-        description: p.summary,
-        path: `/projects/${p.slug}`,
-        image: `/og/project/${p.slug}`,
-        imageAlt: p.title,
-      }),
-    };
+    return pageHead({
+      title: `${p.title} | connectvibeco`,
+      description: p.summary,
+      path: `/projects/${p.slug}`,
+      image: `/og/project/${p.slug}`,
+      imageAlt: p.title,
+      jsonLd: breadcrumbJsonLd([
+        { name: "Projects", path: "/projects" },
+        { name: p.title, path: `/projects/${p.slug}` },
+      ]),
+    });
   },
 });
 

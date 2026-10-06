@@ -11,12 +11,16 @@ import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/dates";
 import { approach, pillars, projects, site, stats, stories, upcomingEvents } from "@/lib/site-data";
 import { copy } from "@/lib/content-store";
+import { DEFAULT_DESCRIPTION, DEFAULT_TITLE, pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
   component: Home,
-  head: () => ({
-    meta: [{ title: "connectvibeco | Building what communities need" }],
-  }),
+  head: () =>
+    pageHead({
+      title: DEFAULT_TITLE,
+      description: DEFAULT_DESCRIPTION,
+      path: "/",
+    }),
 });
 
 const approachIcons = {

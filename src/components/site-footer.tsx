@@ -1,42 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Github, Globe, Heart, Instagram, Linkedin, Youtube, type LucideIcon } from "lucide-react";
-import type { SVGProps } from "react";
+import { Heart } from "lucide-react";
 import { COOKIE_SETTINGS_EVENT } from "@/components/cookie-notice";
 import { Logo } from "@/components/logo";
 import { NewsletterForm } from "@/components/newsletter-form";
+import { socialIconFor } from "@/components/social-icons";
 import { Button } from "@/components/ui/button";
 import { nav, site, social } from "@/lib/site-data";
-
-/** X (Twitter) mark, drawn in the same 24px / 2px-stroke style as Lucide icons. */
-function XIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      {...props}
-    >
-      <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
-      <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
-    </svg>
-  );
-}
-
-type IconType = LucideIcon | ((props: SVGProps<SVGSVGElement>) => React.JSX.Element);
-
-const socialIcons: Record<string, IconType> = {
-  instagram: Instagram,
-  facebook: Facebook,
-  linkedin: Linkedin,
-  x: XIcon,
-  twitter: XIcon,
-  youtube: Youtube,
-  github: Github,
-};
 
 const groups = [
   {
@@ -111,12 +80,10 @@ export function SiteFooter() {
             </div>
           ))}
           <div className="lg:col-span-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-teal">
-              Follow
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-teal">Follow</p>
             <ul className="mt-4 flex flex-wrap gap-3">
               {social.map((s) => {
-                const Icon = socialIcons[s.label.trim().toLowerCase()] ?? Globe;
+                const Icon = socialIconFor(s.label, s.href);
                 return (
                   <li key={s.label}>
                     <a
@@ -127,11 +94,7 @@ export function SiteFooter() {
                       title={s.label}
                       className="group inline-flex size-11 items-center justify-center rounded-full border border-snow/15 bg-snow/5 text-snow/80 transition-[background-color,color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-teal hover:bg-teal hover:text-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
                     >
-                      {Icon ? (
-                        <Icon className="size-5" aria-hidden="true" />
-                      ) : (
-                        <span className="text-xs font-semibold">{s.label[0]}</span>
-                      )}
+                      <Icon className="size-5" aria-hidden="true" />
                     </a>
                   </li>
                 );
@@ -147,7 +110,7 @@ export function SiteFooter() {
 
         <div className="mt-16 flex flex-col gap-3 border-t border-snow/10 pt-6 text-xs text-snow/65 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {new Date().getFullYear()} {site.legalName}
+            © {new Date().getFullYear()} {site.legalName}. All rights reserved.
           </p>
           <div className="flex flex-wrap gap-x-4 gap-y-2">
             {nav.slice(0, 3).map((n) => (
@@ -161,6 +124,12 @@ export function SiteFooter() {
             <Link to="/privacy" className="hover:text-snow">
               Privacy
             </Link>
+            <Link to="/terms" className="hover:text-snow">
+              Terms
+            </Link>
+            <Link to="/copyright" className="hover:text-snow">
+              Copyright
+            </Link>
             <button
               type="button"
               className="hover:text-snow"
@@ -170,6 +139,23 @@ export function SiteFooter() {
             </button>
           </div>
         </div>
+
+        <p className="mt-6 text-center text-xs text-snow/65">
+          Built with{" "}
+          <span role="img" aria-label="love">
+            ❤️
+          </span>{" "}
+          by{" "}
+          <a
+            href="https://beepeelabs.cv"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-teal link-underline"
+          >
+            BeepeeLabs
+            <span className="sr-only"> (opens in a new tab)</span>
+          </a>
+        </p>
       </div>
     </footer>
   );

@@ -15,12 +15,17 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CopyrightRouteImport } from './routes/copyright'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as GetInvolvedRouteImport } from './routes/get-involved'
 import { Route as ImpactRouteImport } from './routes/impact'
+import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as WhatWeDoRouteImport } from './routes/what-we-do'
 import { Route as CheckoutOrderIdRouteImport } from './routes/checkout.$orderId'
 import { Route as EventsSlugRouteImport } from './routes/events_.$slug'
@@ -58,6 +63,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CopyrightRoute = CopyrightRouteImport.update({
+  id: '/copyright',
+  path: '/copyright',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EventsRoute = EventsRouteImport.update({
   id: '/events',
   path: '/events',
@@ -78,6 +88,11 @@ const ImpactRoute = ImpactRouteImport.update({
   path: '/impact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
+  id: '/llms.txt',
+  path: '/llms.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
@@ -86,6 +101,21 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const ProjectsRoute = ProjectsRouteImport.update({
   id: '/projects',
   path: '/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WhatWeDoRoute = WhatWeDoRouteImport.update({
@@ -126,12 +156,17 @@ export interface FileRoutesByFullPath {
   '/careers': typeof CareersRoute
   '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
+  '/copyright': typeof CopyrightRoute
   '/events': typeof EventsRoute
   '/faq': typeof FaqRoute
   '/get-involved': typeof GetInvolvedRoute
   '/impact': typeof ImpactRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/what-we-do': typeof WhatWeDoRoute
   '/checkout/$orderId': typeof CheckoutOrderIdRoute
   '/events/$slug': typeof EventsSlugRoute
@@ -146,12 +181,17 @@ export interface FileRoutesByTo {
   '/careers': typeof CareersRoute
   '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
+  '/copyright': typeof CopyrightRoute
   '/events': typeof EventsRoute
   '/faq': typeof FaqRoute
   '/get-involved': typeof GetInvolvedRoute
   '/impact': typeof ImpactRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/what-we-do': typeof WhatWeDoRoute
   '/checkout/$orderId': typeof CheckoutOrderIdRoute
   '/events/$slug': typeof EventsSlugRoute
@@ -167,12 +207,17 @@ export interface FileRoutesById {
   '/careers': typeof CareersRoute
   '/community': typeof CommunityRoute
   '/contact': typeof ContactRoute
+  '/copyright': typeof CopyrightRoute
   '/events': typeof EventsRoute
   '/faq': typeof FaqRoute
   '/get-involved': typeof GetInvolvedRoute
   '/impact': typeof ImpactRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/what-we-do': typeof WhatWeDoRoute
   '/checkout/$orderId': typeof CheckoutOrderIdRoute
   '/events_/$slug': typeof EventsSlugRoute
@@ -189,12 +234,17 @@ export interface FileRouteTypes {
     | '/careers'
     | '/community'
     | '/contact'
+    | '/copyright'
     | '/events'
     | '/faq'
     | '/get-involved'
     | '/impact'
+    | '/llms.txt'
     | '/privacy'
     | '/projects'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/terms'
     | '/what-we-do'
     | '/checkout/$orderId'
     | '/events/$slug'
@@ -209,12 +259,17 @@ export interface FileRouteTypes {
     | '/careers'
     | '/community'
     | '/contact'
+    | '/copyright'
     | '/events'
     | '/faq'
     | '/get-involved'
     | '/impact'
+    | '/llms.txt'
     | '/privacy'
     | '/projects'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/terms'
     | '/what-we-do'
     | '/checkout/$orderId'
     | '/events/$slug'
@@ -229,12 +284,17 @@ export interface FileRouteTypes {
     | '/careers'
     | '/community'
     | '/contact'
+    | '/copyright'
     | '/events'
     | '/faq'
     | '/get-involved'
     | '/impact'
+    | '/llms.txt'
     | '/privacy'
     | '/projects'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/terms'
     | '/what-we-do'
     | '/checkout/$orderId'
     | '/events_/$slug'
@@ -250,12 +310,17 @@ export interface RootRouteChildren {
   CareersRoute: typeof CareersRoute
   CommunityRoute: typeof CommunityRoute
   ContactRoute: typeof ContactRoute
+  CopyrightRoute: typeof CopyrightRoute
   EventsRoute: typeof EventsRoute
   FaqRoute: typeof FaqRoute
   GetInvolvedRoute: typeof GetInvolvedRoute
   ImpactRoute: typeof ImpactRoute
+  LlmsDottxtRoute: typeof LlmsDottxtRoute
   PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TermsRoute: typeof TermsRoute
   WhatWeDoRoute: typeof WhatWeDoRoute
   CheckoutOrderIdRoute: typeof CheckoutOrderIdRoute
   EventsSlugRoute: typeof EventsSlugRoute
@@ -308,6 +373,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/copyright': {
+      id: '/copyright'
+      path: '/copyright'
+      fullPath: '/copyright'
+      preLoaderRoute: typeof CopyrightRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/events': {
       id: '/events'
       path: '/events'
@@ -336,6 +408,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ImpactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/llms.txt': {
+      id: '/llms.txt'
+      path: '/llms.txt'
+      fullPath: '/llms.txt'
+      preLoaderRoute: typeof LlmsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
@@ -348,6 +427,27 @@ declare module '@tanstack/react-router' {
       path: '/projects'
       fullPath: '/projects'
       preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/what-we-do': {
@@ -402,12 +502,17 @@ const rootRouteChildren: RootRouteChildren = {
   CareersRoute: CareersRoute,
   CommunityRoute: CommunityRoute,
   ContactRoute: ContactRoute,
+  CopyrightRoute: CopyrightRoute,
   EventsRoute: EventsRoute,
   FaqRoute: FaqRoute,
   GetInvolvedRoute: GetInvolvedRoute,
   ImpactRoute: ImpactRoute,
+  LlmsDottxtRoute: LlmsDottxtRoute,
   PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TermsRoute: TermsRoute,
   WhatWeDoRoute: WhatWeDoRoute,
   CheckoutOrderIdRoute: CheckoutOrderIdRoute,
   EventsSlugRoute: EventsSlugRoute,

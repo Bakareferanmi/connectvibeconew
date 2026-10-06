@@ -92,8 +92,8 @@ const FIELDS: Record<ContentType, Field[]> = {
     { key: "body", label: "Answer", kind: "textarea", rows: 6, required: true },
   ],
   social: [
-    { key: "title", label: "Name (e.g. Instagram, Facebook, LinkedIn, X, YouTube)", kind: "text", required: true, help: "Instagram, Facebook, LinkedIn, X, YouTube and GitHub get their own icon. Anything else shows a globe." },
-    { key: "href", label: "Link to the page", kind: "text", required: true, help: "The full link, starting with https://" },
+    { key: "title", label: "Name (e.g. Instagram, TikTok, WhatsApp, Facebook, LinkedIn, X, YouTube)", kind: "text", required: true, help: "Instagram, TikTok, WhatsApp, Facebook, LinkedIn, X, YouTube and GitHub get their own icon. Anything else shows a globe." },
+    { key: "href", label: "Link to the page", kind: "text", required: true, help: "The full link, starting with https://. TikTok: https://www.tiktok.com/@yourname. WhatsApp: https://wa.me/ followed by the number with country code and no + or spaces (e.g. https://wa.me/2348012345678)." },
   ],
   copy: [],
 };

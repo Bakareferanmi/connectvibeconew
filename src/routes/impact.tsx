@@ -8,10 +8,18 @@ import { Kicker, Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { projects, stats } from "@/lib/site-data";
 import { copy } from "@/lib/content-store";
+import { breadcrumbJsonLd, pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/impact")({
   component: ImpactPage,
-  head: () => ({ meta: [{ title: "Impact | connectvibeco" }] }),
+  head: () =>
+    pageHead({
+      title: "Impact | connectvibeco",
+      description:
+        "Communities reached, projects delivered and social value created by Connect eVibe Trust, counted in public.",
+      path: "/impact",
+      jsonLd: breadcrumbJsonLd([{ name: "Impact", path: "/impact" }]),
+    }),
 });
 
 const measures = [

@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { loadContent } from "@/lib/content";
 import { formatDate } from "@/lib/dates";
 import { eventPrice, priceLabel } from "@/lib/pricing";
-import { shareMeta } from "@/lib/seo";
+import { breadcrumbJsonLd, eventJsonLd, pageHead } from "@/lib/seo";
 import { getEvent } from "@/lib/site-data";
 
 export const Route = createFileRoute("/events_/$slug")({
@@ -24,15 +24,20 @@ export const Route = createFileRoute("/events_/$slug")({
   head: ({ loaderData }) => {
     const e = loaderData?.event;
     if (!e) return { meta: [{ title: "Event | connectvibeco" }] };
-    return {
-      meta: shareMeta({
-        title: `${e.title} | connectvibeco`,
-        description: e.summary,
-        path: `/events/${e.slug}`,
-        image: `/og/event/${e.slug}`,
-        imageAlt: e.title,
-      }),
-    };
+    return pageHead({
+      title: `${e.title} | connectvibeco`,
+      description: e.summary,
+      path: `/events/${e.slug}`,
+      image: `/og/event/${e.slug}`,
+      imageAlt: e.title,
+      jsonLd: [
+        eventJsonLd(e),
+        breadcrumbJsonLd([
+          { name: "Events", path: "/events" },
+          { name: e.title, path: `/events/${e.slug}` },
+        ]),
+      ],
+    });
   },
 });
 

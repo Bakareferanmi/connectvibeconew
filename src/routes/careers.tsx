@@ -10,10 +10,18 @@ import { Button } from "@/components/ui/button";
 import { culture, jobs, type JobKind } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 import { copy } from "@/lib/content-store";
+import { breadcrumbJsonLd, pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/careers")({
   component: CareersPage,
-  head: () => ({ meta: [{ title: "Careers | connectvibeco" }] }),
+  head: () =>
+    pageHead({
+      title: "Careers | connectvibeco",
+      description:
+        "Paid roles, apprenticeships and volunteering at Connect eVibe Trust. See open positions and how to apply.",
+      path: "/careers",
+      jsonLd: breadcrumbJsonLd([{ name: "Careers", path: "/careers" }]),
+    }),
 });
 
 const groups: { id: JobKind | "all"; label: string }[] = [

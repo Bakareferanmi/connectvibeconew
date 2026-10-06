@@ -3,7 +3,15 @@ import { NotFound } from "@/components/not-found";
 import { SiteShell } from "@/components/site-shell";
 import { loadContent } from "@/lib/content";
 import { applyContent } from "@/lib/content-store";
-import { DEFAULT_DESCRIPTION, DEFAULT_TITLE, shareMeta } from "@/lib/seo";
+import {
+  DEFAULT_DESCRIPTION,
+  DEFAULT_TITLE,
+  jsonLdScript,
+  organizationJsonLd,
+  ROBOTS_INDEX,
+  shareMeta,
+  websiteJsonLd,
+} from "@/lib/seo";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRoute({
@@ -15,6 +23,7 @@ export const Route = createRootRoute({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: "#002D6B" },
+      { name: "robots", content: ROBOTS_INDEX },
       ...shareMeta({ title: DEFAULT_TITLE, description: DEFAULT_DESCRIPTION, path: "/" }),
     ],
     links: [
@@ -22,6 +31,8 @@ export const Route = createRootRoute({
       { rel: "stylesheet", href: appCss },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],
+    // Who we are, for Google and AI assistants. Page-specific data is added by each route.
+    scripts: [jsonLdScript([organizationJsonLd(), websiteJsonLd()])],
   }),
   notFoundComponent: NotFound,
   component: RootDocument,
@@ -33,7 +44,7 @@ function RootDocument() {
   applyContent(content);
 
   return (
-    <html lang="en" className="antialiased" suppressHydrationWarning>
+    <html lang="en-GB" className="antialiased" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>

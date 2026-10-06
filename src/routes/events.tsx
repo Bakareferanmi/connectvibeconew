@@ -12,10 +12,18 @@ import { eventPrice, priceLabel } from "@/lib/pricing";
 import { eventKinds, events, pastEvents, type EventKind } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 import { copy } from "@/lib/content-store";
+import { breadcrumbJsonLd, pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/events")({
   component: EventsPage,
-  head: () => ({ meta: [{ title: "Events | connectvibeco" }] }),
+  head: () =>
+    pageHead({
+      title: "Events | connectvibeco",
+      description:
+        "Upcoming and past workshops, training days, fundraisers and conferences from Connect eVibe Trust.",
+      path: "/events",
+      jsonLd: breadcrumbJsonLd([{ name: "Events", path: "/events" }]),
+    }),
 });
 
 function EventsPage() {

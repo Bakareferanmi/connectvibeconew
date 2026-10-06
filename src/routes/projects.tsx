@@ -7,10 +7,18 @@ import { Kicker, Section } from "@/components/section";
 import { projects, type ProjectStatus } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 import { copy } from "@/lib/content-store";
+import { breadcrumbJsonLd, pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/projects")({
   component: ProjectsPage,
-  head: () => ({ meta: [{ title: "Projects | connectvibeco" }] }),
+  head: () =>
+    pageHead({
+      title: "Projects | connectvibeco",
+      description:
+        "Retrofit and civic building projects delivered by Connect eVibe Trust with local communities.",
+      path: "/projects",
+      jsonLd: breadcrumbJsonLd([{ name: "Projects", path: "/projects" }]),
+    }),
 });
 
 const statusLabel: Record<ProjectStatus, string> = {

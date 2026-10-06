@@ -9,10 +9,18 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { pillars } from "@/lib/site-data";
 import { copy } from "@/lib/content-store";
+import { breadcrumbJsonLd, pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/what-we-do")({
   component: WhatWeDoPage,
-  head: () => ({ meta: [{ title: "What we do | connectvibeco" }] }),
+  head: () =>
+    pageHead({
+      title: "What we do | connectvibeco",
+      description:
+        "Sustainable infrastructure, community assets, social development and social value: the four practices of Connect eVibe Trust.",
+      path: "/what-we-do",
+      jsonLd: breadcrumbJsonLd([{ name: "What we do", path: "/what-we-do" }]),
+    }),
 });
 
 function WhatWeDoPage() {

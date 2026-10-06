@@ -8,10 +8,18 @@ import { Kicker, Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { communityProgrammes, stories, volunteerRoles } from "@/lib/site-data";
 import { copy } from "@/lib/content-store";
+import { breadcrumbJsonLd, pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/community")({
   component: CommunityPage,
-  head: () => ({ meta: [{ title: "Community | connectvibeco" }] }),
+  head: () =>
+    pageHead({
+      title: "Community | connectvibeco",
+      description:
+        "Community programmes, volunteering and local partnerships run by Connect eVibe Trust.",
+      path: "/community",
+      jsonLd: breadcrumbJsonLd([{ name: "Community", path: "/community" }]),
+    }),
 });
 
 function CommunityPage() {

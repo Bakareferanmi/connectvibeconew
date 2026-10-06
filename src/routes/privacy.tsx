@@ -1,19 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { GA_ID } from "@/lib/analytics";
+import { pageHead } from "@/lib/seo";
 import { site } from "@/lib/site-data";
 
 export const Route = createFileRoute("/privacy")({
   component: PrivacyPage,
-  head: () => ({
-    meta: [
-      { title: "Privacy and cookies | connectvibeco" },
-      {
-        name: "description",
-        content: "How Connect eVibe Trust collects, uses and protects your personal information.",
-      },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "Privacy and cookies | connectvibeco",
+      description: "How Connect eVibe Trust collects, uses and protects your personal information.",
+      path: "/privacy",
+    }),
 });
 
 function Block({ title, children }: { title: string; children: ReactNode }) {

@@ -8,10 +8,18 @@ import { Kicker, Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { volunteerRoles } from "@/lib/site-data";
 import { copy } from "@/lib/content-store";
+import { breadcrumbJsonLd, pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/get-involved")({
   component: GetInvolvedPage,
-  head: () => ({ meta: [{ title: "Get involved | connectvibeco" }] }),
+  head: () =>
+    pageHead({
+      title: "Get involved | connectvibeco",
+      description:
+        "Volunteer, partner, fundraise or donate. Find the way to get involved with Connect eVibe Trust that suits you.",
+      path: "/get-involved",
+      jsonLd: breadcrumbJsonLd([{ name: "Get involved", path: "/get-involved" }]),
+    }),
 });
 
 const doors = [
