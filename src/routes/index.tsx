@@ -3,7 +3,7 @@ import { ArrowRight, ArrowUpRight, Building2, Globe2, Leaf, Users } from "lucide
 import { CountUp } from "@/components/count-up";
 import { CtaBand } from "@/components/cta-band";
 import { FaqList } from "@/components/faq";
-import { Media } from "@/components/media";
+import { Media, Picture } from "@/components/media";
 import { PageHero } from "@/components/page-hero";
 import { Reveal, Stagger, StaggerItem } from "@/components/reveal";
 import { Kicker, Section } from "@/components/section";
@@ -147,9 +147,11 @@ function Home() {
       </Section>
 
       <section className="relative isolate overflow-hidden bg-deep py-20 text-snow lg:py-28">
-        <img
+        <Picture
           src="/images/aerial.jpg"
           alt=""
+          loading="lazy"
+          decoding="async"
           className="absolute inset-0 size-full object-cover opacity-40"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-navy/90 via-deep/80 to-deep/70" />
@@ -328,9 +330,11 @@ function Home() {
       </Section>
 
       <section className="relative isolate overflow-hidden">
-        <img
+        <Picture
           src="/images/careers.jpg"
           alt="A construction professional looking out over a timber building site at dusk"
+          loading="lazy"
+          decoding="async"
           className="absolute inset-0 size-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-navy/92 via-deep/80 to-deep/40" />

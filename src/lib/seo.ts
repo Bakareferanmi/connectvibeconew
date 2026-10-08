@@ -1,7 +1,8 @@
 /**
  * Central SEO / share-card settings.
- * Set VITE_SITE_URL in Vercel (e.g. https://www.connectvibeco.org) once the real
- * domain is live. Until then the fallback below is used.
+ * The official domain is https://connectvibeco.com. It is used unless VITE_SITE_URL
+ * (set in Vercel) names a different real domain. A *.vercel.app address is never used
+ * for canonical links, share cards, the sitemap or llms.txt.
  *
  * What lives here:
  *  - shareMeta():  Open Graph + Twitter tags (share cards)
@@ -14,16 +15,29 @@
 import { site, social, type SiteEvent } from "@/lib/site-data";
 import { eventPrice } from "@/lib/pricing";
 
-export const SITE_URL: string = (
-  (import.meta.env.VITE_SITE_URL as string | undefined)?.trim() ||
-  "https://connectvibeconew.vercel.app"
-).replace(/\/$/, "");
+const OFFICIAL_URL = "https://connectvibeco.com";
+
+/** The configured address, or the official domain if it is missing, malformed or a preview host. */
+function resolveSiteUrl(configured: string | undefined): string {
+  const value = configured?.trim();
+  if (!value) return OFFICIAL_URL;
+  try {
+    const { protocol, hostname, origin } = new URL(value);
+    const isPreviewHost = hostname.endsWith(".vercel.app") || hostname === "localhost";
+    if (protocol !== "https:" || isPreviewHost) return OFFICIAL_URL;
+    return origin;
+  } catch {
+    return OFFICIAL_URL;
+  }
+}
+
+export const SITE_URL: string = resolveSiteUrl(import.meta.env.VITE_SITE_URL as string | undefined);
 
 export const SITE_NAME = "connectvibeco";
 
-export const DEFAULT_TITLE = "connectvibeco | Building what communities need";
+export const DEFAULT_TITLE = "Connect eVibe Trust | Sustainable Infrastructure & Community Charity";
 export const DEFAULT_DESCRIPTION =
-  "Connect eVibe Trust. Sustainable infrastructure, stronger communities, better opportunities. Registered charity in England and Wales.";
+  "Connect eVibe Trust (connectvibeco) is a registered charity in England and Wales building sustainable infrastructure, stronger communities and opportunity.";
 
 /** Allow rich snippets, large image previews and full-length snippets in search and AI answers. */
 export const ROBOTS_INDEX =
@@ -92,12 +106,19 @@ export function organizationJsonLd(): JsonLd {
     "@type": "NGO",
     "@id": `${SITE_URL}/#organization`,
     name: site.legalName,
-    alternateName: site.name,
+    legalName: site.legalName,
+    alternateName: [site.name, site.web],
     url: SITE_URL,
     logo: `${SITE_URL}/apple-touch-icon.png`,
     image: `${SITE_URL}/og.jpg`,
     description: `${site.description} ${site.charityLine}.`,
     slogan: site.shortTag,
+    knowsAbout: [
+      "Sustainable infrastructure",
+      "Community assets",
+      "Social development",
+      "Social value",
+    ],
     email: site.email,
     contactPoint: {
       "@type": "ContactPoint",
@@ -116,6 +137,7 @@ export function websiteJsonLd(): JsonLd {
     "@id": `${SITE_URL}/#website`,
     url: SITE_URL,
     name: SITE_NAME,
+    alternateName: [site.legalName],
     description: DEFAULT_DESCRIPTION,
     inLanguage: "en-GB",
     publisher: { "@id": `${SITE_URL}/#organization` },
@@ -157,13 +179,19 @@ export function eventJsonLd(e: SiteEvent): JsonLd {
     },
     image: [image],
     url,
-    organizer: { "@type": "NGO", name: site.legalName, url: SITE_URL },
+    organizer: {
+      "@type": "NGO",
+      "@id": `${SITE_URL}/#organization`,
+      name: site.legalName,
+      url: SITE_URL,
+    },
+    // Past events are not "sold out", so they carry no availability claim.
     offers: {
       "@type": "Offer",
       url,
       price: price ? (price.minor / 100).toFixed(2) : "0",
       priceCurrency: price?.currency ?? "GBP",
-      availability: e.past ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
+      ...(e.past ? {} : { availability: "https://schema.org/InStock" }),
     },
   };
 }

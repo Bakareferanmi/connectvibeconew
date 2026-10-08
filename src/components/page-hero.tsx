@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
+import { Picture } from "@/components/media";
 import { cn } from "@/lib/utils";
 
 type PageHeroProps = {
@@ -33,16 +34,13 @@ export function PageHero({
         compact ? "min-h-[70vh]" : "min-h-[88vh]",
       )}
     >
-      <img
+      <Picture
         src={image}
         alt={imageAlt}
         loading="eager"
         decoding="async"
         fetchPriority="high"
-        className={cn(
-          "absolute inset-0 size-full object-cover",
-          !reduce && "hero-kenburns",
-        )}
+        className={cn("absolute inset-0 size-full object-cover", !reduce && "hero-kenburns")}
       />
       <div className="absolute inset-0 bg-gradient-to-r from-navy/92 via-deep/78 to-deep/35" />
       <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-transparent to-navy/20" />
