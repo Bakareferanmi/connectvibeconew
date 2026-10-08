@@ -5,7 +5,7 @@ export const site = {
   shortTag: "Real solutions. Lasting impact.",
   description:
     "We connect people, ideas and resources to create resilient infrastructure and lasting social value.",
-  email: "hello@connectvibeco.com",
+  email: "join@connectvibeco.com",
   // TODO: replace with the charity's real donation page (JustGiving, Stripe link, etc.). Leave "" to hide Donate buttons.
   donateUrl: "https://www.justgiving.com",
   web: "connectvibeco.com",
