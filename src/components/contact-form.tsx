@@ -7,19 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { contactPathways, type PathwayId } from "@/lib/site-data";
+import { submitContact } from "@/lib/forms";
 import { cn } from "@/lib/utils";
-
-const STORAGE_KEY = "connectvibe.enquiries";
-
-type Enquiry = {
-  id: string;
-  at: string;
-  pathway: PathwayId;
-  name: string;
-  email: string;
-  organisation: string;
-  message: string;
-};
 
 export function ContactForm({ initialIntent }: { initialIntent?: string }) {
   const initial = useMemo<PathwayId>(() => {
@@ -32,40 +21,42 @@ export function ContactForm({ initialIntent }: { initialIntent?: string }) {
   const [email, setEmail] = useState("");
   const [organisation, setOrganisation] = useState("");
   const [message, setMessage] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [company, setCompany] = useState("");
+  const [error, setError] = useState("");
   const [sent, setSent] = useState(false);
 
   useEffect(() => {
     setPathway(initial);
   }, [initial]);
 
-  function onSubmit(e: FormEvent) {
+  async function onSubmit(e: FormEvent) {
     e.preventDefault();
+    if (busy) return;
     if (!name.trim() || !email.trim() || !message.trim()) {
       toast.error("Please add your name, email and a short message.");
       return;
     }
-    const enquiry: Enquiry = {
-      id: crypto.randomUUID(),
-      at: new Date().toISOString(),
-      pathway,
-      name: name.trim(),
-      email: email.trim(),
-      organisation: organisation.trim(),
-      message: message.trim(),
-    };
+    setBusy(true);
+    setError("");
     try {
-      const prev = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]") as Enquiry[];
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([enquiry, ...prev].slice(0, 20)));
+      await submitContact({ data: { pathway, name, email, organisation, message, company } });
+      setSent(true);
+      setName("");
+      setEmail("");
+      setOrganisation("");
+      setMessage("");
+      toast.success("Message received. We’ll be in touch.");
     } catch {
-      /* ignore quota */
+      setError("We couldn’t send your message. Please try again. Your details are still here.");
+    } finally {
+      setBusy(false);
     }
-    setSent(true);
-    toast.success("Message received. We’ll be in touch.");
   }
 
   if (sent) {
     return (
-      <div className="rounded-3xl bg-snow p-8 shadow-[var(--shadow-border)] sm:p-10">
+      <div role="status" className="rounded-3xl bg-snow p-8 shadow-[var(--shadow-border)] sm:p-10">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ocean">Thank you</p>
         <h2 className="mt-3 text-2xl font-semibold text-deep">We’ve got it.</h2>
         <p className="mt-3 max-w-md text-muted">
@@ -152,8 +143,14 @@ export function ContactForm({ initialIntent }: { initialIntent?: string }) {
         </div>
       </div>
 
-      <Button type="submit" size="lg" className="mt-6">
-        Send message
+      <div hidden aria-hidden="true">
+        <label htmlFor="contact-company">Leave this empty</label>
+        <input id="contact-company" name="company" tabIndex={-1} autoComplete="off"
+          value={company} onChange={(e) => setCompany(e.target.value)} />
+      </div>
+      {error && <p role="alert" className="mt-4 text-sm text-red-700">{error}</p>}
+      <Button type="submit" size="lg" className="mt-6" disabled={busy}>
+        {busy ? "Sending..." : "Send message"}
       </Button>
     </form>
   );

@@ -1,13 +1,4 @@
-/**
- * Server-only email helper for the website forms (newsletter, event sign-ups).
- * Uses Resend (https://resend.com). Set these environment variables in Vercel:
- *
- *   RESEND_API_KEY     your Resend API key
- *   FORMS_TO_EMAIL     where sign-ups are delivered (the client's inbox)
- *   FORMS_FROM_EMAIL   e.g. "connectvibeco <forms@yourdomain.org>" (domain verified in Resend)
- *
- * Until they are set, local development just logs the message to the terminal.
- */
+/** Website submissions go to Formspree; durable database copies remain available in admin. */
 import { dbSource, getSql } from "@/lib/db";
 import { env } from "@/lib/env.server";
 
@@ -46,6 +37,20 @@ export function escapeHtml(value: string): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
+}
+
+/** Require Formspree to accept the submission before showing success. */
+export async function sendToFormspree(fields: Record<string, unknown>): Promise<void> {
+  const response = await fetch("https://formspree.io/f/mwllkgqk", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify(fields),
+    signal: AbortSignal.timeout(15000),
+  });
+  if (!response.ok) {
+    console.error(`[forms] Formspree returned ${response.status}`);
+    throw new Error("Could not deliver your submission. Please try again.");
+  }
 }
 
 type Mail = {
