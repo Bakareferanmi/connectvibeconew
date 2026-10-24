@@ -52,13 +52,13 @@ const contactSchema = z.object({
   email: z.string().trim().email().max(200),
   organisation: z.string().trim().max(200),
   message: z.string().trim().min(1).max(5000),
-  company: honeypot,
+  website: honeypot,
 });
 
 export const submitContact = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => contactSchema.parse(data))
   .handler(async ({ data }): Promise<FormResult> => {
-    if (data.company) return { ok: true };
+    if (data.website) throw new Error("Please leave the website field empty and try again.");
     await record({
       kind: "contact",
       name: data.name,

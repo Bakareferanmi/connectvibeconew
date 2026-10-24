@@ -22,7 +22,7 @@ export function ContactForm({ initialIntent }: { initialIntent?: string }) {
   const [organisation, setOrganisation] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
-  const [company, setCompany] = useState("");
+  const [website, setWebsite] = useState("");
   const [error, setError] = useState("");
   const [sent, setSent] = useState(false);
 
@@ -40,7 +40,7 @@ export function ContactForm({ initialIntent }: { initialIntent?: string }) {
     setBusy(true);
     setError("");
     try {
-      await submitContact({ data: { pathway, name, email, organisation, message, company } });
+      await submitContact({ data: { pathway, name, email, organisation, message, website } });
       setSent(true);
       setName("");
       setEmail("");
@@ -103,6 +103,7 @@ export function ContactForm({ initialIntent }: { initialIntent?: string }) {
           <Input
             id="name"
             name="name"
+            maxLength={120}
             autoComplete="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -114,6 +115,7 @@ export function ContactForm({ initialIntent }: { initialIntent?: string }) {
           <Input
             id="email"
             name="email"
+            maxLength={200}
             type="email"
             autoComplete="email"
             value={email}
@@ -126,6 +128,7 @@ export function ContactForm({ initialIntent }: { initialIntent?: string }) {
           <Input
             id="org"
             name="organisation"
+            maxLength={200}
             value={organisation}
             onChange={(e) => setOrganisation(e.target.value)}
           />
@@ -135,6 +138,7 @@ export function ContactForm({ initialIntent }: { initialIntent?: string }) {
           <Textarea
             id="message"
             name="message"
+            maxLength={5000}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             required
@@ -144,9 +148,9 @@ export function ContactForm({ initialIntent }: { initialIntent?: string }) {
       </div>
 
       <div hidden aria-hidden="true">
-        <label htmlFor="contact-company">Leave this empty</label>
-        <input id="contact-company" name="company" tabIndex={-1} autoComplete="off"
-          value={company} onChange={(e) => setCompany(e.target.value)} />
+        <label htmlFor="contact-website">Leave this empty</label>
+        <input id="contact-website" name="website" tabIndex={-1} autoComplete="off"
+          value={website} onChange={(e) => setWebsite(e.target.value)} />
       </div>
       {error && <p role="alert" className="mt-4 text-sm text-red-700">{error}</p>}
       <Button type="submit" size="lg" className="mt-6" disabled={busy}>
