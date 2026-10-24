@@ -28,7 +28,7 @@ text, upload pictures, and see newsletter and event sign-ups. Log in with `ADMIN
 | `ADMIN_SESSION_SECRET` | Optional. Secret used to sign the admin login cookie. |
 | `VITE_SITE_URL` | The live address, e.g. `https://connectvibeco.com`. Used for share previews. |
 | `VITE_GA_MEASUREMENT_ID` | Optional. Google Analytics 4 ID (loads only after cookie consent). |
-| `RESEND_API_KEY`, `FORMS_TO_EMAIL`, `FORMS_FROM_EMAIL` | Email delivery of sign-ups to the client. |
+| `RESEND_API_KEY`, `FORMS_TO_EMAIL`, `FORMS_FROM_EMAIL` | Optional Resend delivery for payment notifications. Website enquiry, newsletter and free event forms use Formspree. |
 | `PAYMENT_PROVIDER` | Optional. Defaults to `demo`. See `src/lib/payments.server.ts` to add a real provider. |
 
 ## Useful commands
@@ -36,3 +36,19 @@ text, upload pictures, and see newsletter and event sign-ups. Log in with `ADMIN
 - `npm run build`: production build, then applies database migrations.
 - `npm run typecheck`: TypeScript check.
 - `npm test`: unit tests.
+
+## Website forms
+
+Contact enquiries (including Get Involved and career pathways), newsletter sign-ups and free
+event registrations submit to `https://formspree.io/f/mwllkgqk`. Each includes `form_type`
+and a subject so submissions can be identified in the Formspree dashboard. The contact form
+also sends the selected pathway, organisation and message. Free events include the event
+name, date, number of places and notes.
+
+Success is shown only after Formspree accepts the submission. When a persistent database is
+configured, a copy is also stored for admin. Paid ticket checkout keeps its existing payment
+flow and Resend notification settings. Formspree collects newsletter requests; sending a
+newsletter or managing an unsubscribe list requires a separate mailing workflow.
+
+After deployment, submit one enquiry, newsletter request and free event registration and
+confirm they appear in the Formspree dashboard and the configured notification inbox.

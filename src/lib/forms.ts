@@ -23,30 +23,51 @@ const eventSchema = z.object({
 
 export type FormResult = { ok: true };
 
-/**
- * Keep a copy in the database (sign-ups dashboard) AND email the client.
- * It only fails if neither worked, so a sign-up is never silently lost.
- */
+/** Deliver to Formspree and retain a database copy when storage is available. */
 async function record(args: {
-  kind: "newsletter" | "event";
+  kind: "newsletter" | "event" | "contact";
   name: string | null;
   email: string;
   details: Record<string, unknown>;
   mail: { subject: string; text: string; html: string };
 }): Promise<void> {
-  const { saveSubmission, sendMail } = await import("./forms.server.ts");
-  const [stored, mailed] = await Promise.all([
-    saveSubmission(args.kind, args.name, args.email, args.details).catch((err) => {
-      console.error("[forms] could not save submission:", err);
-      return false;
-    }),
-    sendMail({ ...args.mail, replyTo: args.email }).then(
-      () => true,
-      () => false,
-    ),
-  ]);
-  if (!stored && !mailed) throw new Error("Could not record your submission");
+  const { saveSubmission, sendToFormspree } = await import("./forms.server.ts");
+  await sendToFormspree({
+    _subject: args.mail.subject,
+    form_type: args.kind,
+    name: args.name ?? "",
+    email: args.email,
+    ...args.details,
+  });
+  try {
+    await saveSubmission(args.kind, args.name, args.email, args.details);
+  } catch (err) {
+    console.error("[forms] could not save database copy:", err);
+  }
 }
+
+const contactSchema = z.object({
+  pathway: z.enum(["general", "partner", "support", "volunteer", "project", "career"]),
+  name: z.string().trim().min(1).max(120),
+  email: z.string().trim().email().max(200),
+  organisation: z.string().trim().max(200),
+  message: z.string().trim().min(1).max(5000),
+  company: honeypot,
+});
+
+export const submitContact = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => contactSchema.parse(data))
+  .handler(async ({ data }): Promise<FormResult> => {
+    if (data.company) return { ok: true };
+    await record({
+      kind: "contact",
+      name: data.name,
+      email: data.email,
+      details: { pathway: data.pathway, organisation: data.organisation, message: data.message },
+      mail: { subject: `New ${data.pathway} enquiry`, text: data.message, html: "" },
+    });
+    return { ok: true };
+  });
 
 export const subscribeNewsletter = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => newsletterSchema.parse(data))
