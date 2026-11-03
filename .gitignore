@@ -5,3 +5,6 @@ node_modules
 screenshots
 attachments
 .node_modules.lock
+
+/.grok/
+/dev-log.txt
