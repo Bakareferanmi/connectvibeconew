@@ -26,7 +26,7 @@ text, upload pictures, and see newsletter and event sign-ups. Log in with `ADMIN
 | `DATABASE_URL` | Neon Postgres (set by the Neon integration). Tables are created on each build. |
 | `ADMIN_PASSWORD` | Password for `/admin`. |
 | `ADMIN_SESSION_SECRET` | Optional. Secret used to sign the admin login cookie. |
-| `VITE_SITE_URL` | The live address, e.g. `https://connectvibeco.com`. Used for share previews. |
+| `VITE_SITE_URL` | Optional canonical site origin. Defaults to `https://www.connectvibeco.com` and drives SEO URLs and share previews. |
 | `VITE_GA_MEASUREMENT_ID` | Optional. Google Analytics 4 ID (loads only after cookie consent). |
 | `RESEND_API_KEY`, `FORMS_TO_EMAIL`, `FORMS_FROM_EMAIL` | Optional Resend delivery for payment notifications. Website enquiry, newsletter and free event forms use Formspree. |
 | `PAYMENT_PROVIDER` | Optional. Defaults to `demo`. See `src/lib/payments.server.ts` to add a real provider. |

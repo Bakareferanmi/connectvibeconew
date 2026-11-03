@@ -19,7 +19,7 @@ export const Route = createFileRoute("/contact")({
   }),
   head: () =>
     pageHead({
-      title: "Contact | connectvibeco",
+      title: "Contact",
       description:
         "Get in touch with Connect eVibe Trust about partnerships, projects, events, volunteering and press enquiries.",
       path: "/contact",

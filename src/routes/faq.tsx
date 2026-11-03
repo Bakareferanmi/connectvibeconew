@@ -17,7 +17,7 @@ export const Route = createFileRoute("/faq")({
   },
   head: ({ loaderData }) =>
     pageHead({
-      title: "FAQs | connectvibeco",
+      title: "FAQs",
       description:
         "Answers to common questions about our work, events, giving and getting involved.",
       path: "/faq",

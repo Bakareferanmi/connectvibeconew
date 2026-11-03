@@ -14,7 +14,7 @@ export const Route = createFileRoute("/get-involved")({
   component: GetInvolvedPage,
   head: () =>
     pageHead({
-      title: "Get involved | connectvibeco",
+      title: "Get involved",
       description:
         "Volunteer, partner, fundraise or donate. Find the way to get involved with Connect eVibe Trust that suits you.",
       path: "/get-involved",

@@ -1,6 +1,6 @@
 /**
  * Central SEO / share-card settings.
- * The official domain is https://connectvibeco.com. It is used unless VITE_SITE_URL
+ * The official domain is https://www.connectvibeco.com. It is used unless VITE_SITE_URL
  * (set in Vercel) names a different real domain. A *.vercel.app address is never used
  * for canonical links, share cards, the sitemap or llms.txt.
  *
@@ -15,7 +15,7 @@
 import { site, social, type SiteEvent } from "@/lib/site-data";
 import { eventPrice } from "@/lib/pricing";
 
-const OFFICIAL_URL = "https://connectvibeco.com";
+const OFFICIAL_URL = "https://www.connectvibeco.com";
 
 /** The configured address, or the official domain if it is missing, malformed or a preview host. */
 function resolveSiteUrl(configured: string | undefined): string {
@@ -24,7 +24,9 @@ function resolveSiteUrl(configured: string | undefined): string {
   try {
     const { protocol, hostname, origin } = new URL(value);
     const isPreviewHost = hostname.endsWith(".vercel.app") || hostname === "localhost";
-    if (protocol !== "https:" || isPreviewHost) return OFFICIAL_URL;
+    if (protocol !== "https:" || isPreviewHost || hostname === "connectvibeco.com") {
+      return OFFICIAL_URL;
+    }
     return origin;
   } catch {
     return OFFICIAL_URL;
@@ -33,7 +35,7 @@ function resolveSiteUrl(configured: string | undefined): string {
 
 export const SITE_URL: string = resolveSiteUrl(import.meta.env.VITE_SITE_URL as string | undefined);
 
-export const SITE_NAME = "connectvibeco";
+export const SITE_NAME = site.legalName;
 
 export const DEFAULT_TITLE = "Connect eVibe Trust | Sustainable Infrastructure & Community Charity";
 export const DEFAULT_DESCRIPTION =
@@ -137,7 +139,7 @@ export function websiteJsonLd(): JsonLd {
     "@id": `${SITE_URL}/#website`,
     url: SITE_URL,
     name: SITE_NAME,
-    alternateName: [site.legalName],
+    alternateName: [site.name],
     description: DEFAULT_DESCRIPTION,
     inLanguage: "en-GB",
     publisher: { "@id": `${SITE_URL}/#organization` },
@@ -213,12 +215,13 @@ type PageHeadArgs = ShareArgs & {
  */
 export function pageHead({ noindex, jsonLd, ...share }: PageHeadArgs) {
   const path = share.path ?? "/";
+  const title = path === "/" ? share.title : `${share.title} | ${SITE_NAME}`;
   return {
     meta: [
-      ...shareMeta(share),
+      ...shareMeta({ ...share, title }),
       { name: "robots", content: noindex ? ROBOTS_NOINDEX : ROBOTS_INDEX },
     ],
-    links: [{ rel: "canonical", href: `${SITE_URL}${path === "/" ? "" : path}` }],
+    links: [{ rel: "canonical", href: `${SITE_URL}${path}` }],
     scripts: jsonLd ? [jsonLdScript(jsonLd)] : [],
   };
 }

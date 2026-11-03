@@ -15,7 +15,7 @@ export const Route = createFileRoute("/what-we-do")({
   component: WhatWeDoPage,
   head: () =>
     pageHead({
-      title: "What we do | connectvibeco",
+      title: "What we do",
       description:
         "Sustainable infrastructure, community assets, social development and social value: the four practices of Connect eVibe Trust.",
       path: "/what-we-do",

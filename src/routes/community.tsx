@@ -14,7 +14,7 @@ export const Route = createFileRoute("/community")({
   component: CommunityPage,
   head: () =>
     pageHead({
-      title: "Community | connectvibeco",
+      title: "Community",
       description:
         "Community programmes, volunteering and local partnerships run by Connect eVibe Trust.",
       path: "/community",

@@ -13,7 +13,7 @@ export const Route = createFileRoute("/projects")({
   component: ProjectsPage,
   head: () =>
     pageHead({
-      title: "Projects | connectvibeco",
+      title: "Projects",
       description:
         "Retrofit and civic building projects delivered by Connect eVibe Trust with local communities.",
       path: "/projects",

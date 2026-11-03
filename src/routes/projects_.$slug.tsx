@@ -20,9 +20,9 @@ export const Route = createFileRoute("/projects_/$slug")({
   },
   head: ({ loaderData }) => {
     const p = loaderData?.project;
-    if (!p) return { meta: [{ title: "Project | connectvibeco" }] };
+    if (!p) return { meta: [{ title: "Project | Connect eVibe Trust" }] };
     return pageHead({
-      title: `${p.title} | connectvibeco`,
+      title: p.title,
       description: p.summary,
       path: `/projects/${p.slug}`,
       image: `/og/project/${p.slug}`,
