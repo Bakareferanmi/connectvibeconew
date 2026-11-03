@@ -23,7 +23,7 @@ const eventSchema = z.object({
 
 export type FormResult = { ok: true };
 
-/** Deliver to Formspree and retain a database copy when storage is available. */
+/** Retain a database copy; free events continue to use Formspree for delivery. */
 async function record(args: {
   kind: "newsletter" | "event" | "contact";
   name: string | null;
@@ -32,13 +32,15 @@ async function record(args: {
   mail: { subject: string; text: string; html: string };
 }): Promise<void> {
   const { saveSubmission, sendToFormspree } = await import("./forms.server.ts");
-  await sendToFormspree({
-    _subject: args.mail.subject,
-    form_type: args.kind,
-    name: args.name ?? "",
-    email: args.email,
-    ...args.details,
-  });
+  if (args.kind === "event") {
+    await sendToFormspree({
+      _subject: args.mail.subject,
+      form_type: args.kind,
+      name: args.name ?? "",
+      email: args.email,
+      ...args.details,
+    });
+  }
   try {
     await saveSubmission(args.kind, args.name, args.email, args.details);
   } catch (err) {
