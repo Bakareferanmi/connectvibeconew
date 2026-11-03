@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { registerForEvent } from "@/lib/forms";
+import { registerForEvent, validateFreeEvent } from "@/lib/forms";
+import { sendToPentreeform } from "@/lib/pentreeform";
 import { startCheckout } from "@/lib/payments";
 import { formatMoney, type EventPrice } from "@/lib/pricing";
 
@@ -40,9 +41,24 @@ export function EventRegisterForm({
         window.location.assign(url); // keep busy: we are leaving this page
         return;
       }
-      await registerForEvent({
-        data: { slug, name, email, guests: Number(guests), notes, company },
+      if (company) { setDone(true); setBusy(false); return; }
+      const registration = { slug, name, email, guests: Number(guests), notes, company };
+      const event = await validateFreeEvent({ data: registration });
+      await sendToPentreeform({
+        form_type: "event",
+        subject: `Event registration: ${event.title}`,
+        event: event.title,
+        date: event.date,
+        place: event.place,
+        slug,
+        name: name.trim(),
+        email: email.trim(),
+        places: String(registration.guests),
+        notes: notes.trim(),
       });
+      // The verified Pentreeform submission is authoritative; retain the local copy when possible.
+      try { await registerForEvent({ data: registration }); }
+      catch (err) { console.error("Could not save local event copy:", err); }
       setDone(true);
       toast.success("You’re registered. We’ll be in touch.");
     } catch {
