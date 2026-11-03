@@ -41,7 +41,10 @@ export function EventRegisterForm({
         window.location.assign(url); // keep busy: we are leaving this page
         return;
       }
-      if (company) { setDone(true); setBusy(false); return; }
+      if (company) {
+        setCompany("");
+        throw new Error("Please try registering again.");
+      }
       const registration = { slug, name, email, guests: Number(guests), notes, company };
       const event = await validateFreeEvent({ data: registration });
       await sendToPentreeform({
@@ -159,8 +162,8 @@ export function EventRegisterForm({
       <div className="absolute -left-[9999px]" aria-hidden="true">
         <label htmlFor="reg-company">Company</label>
         <input
-          id="reg-company"
-          name="company"
+          id="reg-website-check"
+          name="website_check"
           type="text"
           tabIndex={-1}
           autoComplete="off"
