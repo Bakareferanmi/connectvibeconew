@@ -27,7 +27,7 @@ export const Route = createRootRoute({
       ...shareMeta({ title: DEFAULT_TITLE, description: DEFAULT_DESCRIPTION, path: "/" }),
     ],
     links: [
-      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "icon", href: "/favicon.ico", sizes: "16x16 32x32 48x48 96x96" },
       { rel: "stylesheet", href: appCss },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],
