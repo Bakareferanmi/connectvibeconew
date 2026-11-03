@@ -8,7 +8,7 @@ export const Route = createFileRoute("/privacy")({
   component: PrivacyPage,
   head: () =>
     pageHead({
-      title: "Privacy and cookies | connectvibeco",
+      title: "Privacy and cookies",
       description: "How Connect eVibe Trust collects, uses and protects your personal information.",
       path: "/privacy",
     }),

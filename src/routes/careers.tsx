@@ -16,7 +16,7 @@ export const Route = createFileRoute("/careers")({
   component: CareersPage,
   head: () =>
     pageHead({
-      title: "Careers | connectvibeco",
+      title: "Careers",
       description:
         "Paid roles, apprenticeships and volunteering at Connect eVibe Trust. See open positions and how to apply.",
       path: "/careers",

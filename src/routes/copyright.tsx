@@ -7,7 +7,7 @@ export const Route = createFileRoute("/copyright")({
   component: CopyrightPage,
   head: () =>
     pageHead({
-      title: "Copyright notice | connectvibeco",
+      title: "Copyright notice",
       description:
         "Copyright and permitted use of the content on the Connect eVibe Trust website, and how to contact us about reuse or a concern.",
       path: "/copyright",

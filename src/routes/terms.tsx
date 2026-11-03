@@ -7,7 +7,7 @@ export const Route = createFileRoute("/terms")({
   component: TermsPage,
   head: () =>
     pageHead({
-      title: "Terms and conditions | connectvibeco",
+      title: "Terms and conditions",
       description:
         "The terms that apply when you use the Connect eVibe Trust website, register for events or send us enquiries.",
       path: "/terms",

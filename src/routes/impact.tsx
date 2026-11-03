@@ -14,7 +14,7 @@ export const Route = createFileRoute("/impact")({
   component: ImpactPage,
   head: () =>
     pageHead({
-      title: "Impact | connectvibeco",
+      title: "Impact",
       description:
         "Communities reached, projects delivered and social value created by Connect eVibe Trust, counted in public.",
       path: "/impact",

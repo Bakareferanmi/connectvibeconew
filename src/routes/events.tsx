@@ -18,7 +18,7 @@ export const Route = createFileRoute("/events")({
   component: EventsPage,
   head: () =>
     pageHead({
-      title: "Events | connectvibeco",
+      title: "Events",
       description:
         "Upcoming and past workshops, training days, fundraisers and conferences from Connect eVibe Trust.",
       path: "/events",

@@ -23,9 +23,9 @@ export const Route = createFileRoute("/events_/$slug")({
   },
   head: ({ loaderData }) => {
     const e = loaderData?.event;
-    if (!e) return { meta: [{ title: "Event | connectvibeco" }] };
+    if (!e) return { meta: [{ title: "Event | Connect eVibe Trust" }] };
     return pageHead({
-      title: `${e.title} | connectvibeco`,
+      title: e.title,
       description: e.summary,
       path: `/events/${e.slug}`,
       image: `/og/event/${e.slug}`,
