@@ -23,7 +23,7 @@ const eventSchema = z.object({
 
 export type FormResult = { ok: true };
 
-/** Retain a database copy; free events continue to use Formspree for delivery. */
+/** Retain a database copy after Pentreeform has accepted a submission. */
 async function record(args: {
   kind: "newsletter" | "event" | "contact";
   name: string | null;
@@ -31,16 +31,7 @@ async function record(args: {
   details: Record<string, unknown>;
   mail: { subject: string; text: string; html: string };
 }): Promise<void> {
-  const { saveSubmission, sendToFormspree } = await import("./forms.server.ts");
-  if (args.kind === "event") {
-    await sendToFormspree({
-      _subject: args.mail.subject,
-      form_type: args.kind,
-      name: args.name ?? "",
-      email: args.email,
-      ...args.details,
-    });
-  }
+  const { saveSubmission } = await import("./forms.server.ts");
   try {
     await saveSubmission(args.kind, args.name, args.email, args.details);
   } catch (err) {
@@ -88,6 +79,18 @@ export const subscribeNewsletter = createServerFn({ method: "POST" })
       },
     });
     return { ok: true };
+  });
+
+/** Confirm the event is currently open and free before asking Pentreeform to save it. */
+export const validateFreeEvent = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => eventSchema.parse(data))
+  .handler(async ({ data }): Promise<{ title: string; date: string; place: string }> => {
+    if (data.company) throw new Error("Could not register");
+    await loadContent();
+    const event = getEvent(data.slug);
+    if (!event || event.past) throw new Error("This event is not open for registration");
+    if (eventPrice(event)) throw new Error("This event needs a ticket. Please use the booking form");
+    return { title: event.title, date: event.date, place: `${event.place}, ${event.city}` };
   });
 
 export const registerForEvent = createServerFn({ method: "POST" })
