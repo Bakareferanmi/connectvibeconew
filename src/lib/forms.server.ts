@@ -1,4 +1,4 @@
-/** Website submissions go to Formspree; durable database copies remain available in admin. */
+/** Public forms use Pentreeform. This module handles admin copies and paid-ticket email. */
 import { dbSource, getSql } from "@/lib/db";
 import { env } from "@/lib/env.server";
 
@@ -37,20 +37,6 @@ export function escapeHtml(value: string): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
-}
-
-/** Require Formspree to accept the submission before showing success. */
-export async function sendToFormspree(fields: Record<string, unknown>): Promise<void> {
-  const response = await fetch("https://formspree.io/f/mwllkgqk", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify(fields),
-    signal: AbortSignal.timeout(15000),
-  });
-  if (!response.ok) {
-    console.error(`[forms] Formspree returned ${response.status}`);
-    throw new Error("Could not deliver your submission. Please try again.");
-  }
 }
 
 type Mail = {

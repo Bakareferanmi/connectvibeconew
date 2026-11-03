@@ -28,7 +28,7 @@ text, upload pictures, and see newsletter and event sign-ups. Log in with `ADMIN
 | `ADMIN_SESSION_SECRET` | Optional. Secret used to sign the admin login cookie. |
 | `VITE_SITE_URL` | Optional canonical site origin. Defaults to `https://www.connectvibeco.com` and drives SEO URLs and share previews. |
 | `VITE_GA_MEASUREMENT_ID` | Optional. Google Analytics 4 ID (loads only after cookie consent). |
-| `RESEND_API_KEY`, `FORMS_TO_EMAIL`, `FORMS_FROM_EMAIL` | Optional Resend delivery for payment notifications. Website enquiry, newsletter and free event forms use Formspree. |
+| `RESEND_API_KEY`, `FORMS_TO_EMAIL`, `FORMS_FROM_EMAIL` | Resend settings for paid-ticket notifications. Public form notifications are configured separately in Pentreeform. |
 | `PAYMENT_PROVIDER` | Optional. Defaults to `demo`. See `src/lib/payments.server.ts` to add a real provider. |
 
 ## Useful commands
@@ -40,15 +40,14 @@ text, upload pictures, and see newsletter and event sign-ups. Log in with `ADMIN
 ## Website forms
 
 Contact enquiries (including Get Involved and career pathways), newsletter sign-ups and free
-event registrations submit to `https://formspree.io/f/mwllkgqk`. Each includes `form_type`
-and a subject so submissions can be identified in the Formspree dashboard. The contact form
-also sends the selected pathway, organisation and message. Free events include the event
-name, date, number of places and notes.
+event registrations go to the ConnectVibeCo form in Pentreeform. Use the `form_type` and subject
+fields to distinguish them in the Pentreeform inbox. Configure the notification recipient in
+Pentreeform and confirm that the messages reach that mailbox.
 
-Success is shown only after Formspree accepts the submission. When a persistent database is
-configured, a copy is also stored for admin. Paid ticket checkout keeps its existing payment
-flow and Resend notification settings. Formspree collects newsletter requests; sending a
-newsletter or managing an unsubscribe list requires a separate mailing workflow.
+Public forms show success after Pentreeform confirms the submission. The site also tries to
+save a copy for the ConnectVibeCo admin dashboard when a persistent database is configured.
+Paid tickets use the checkout flow and its Resend settings. Newsletter sign-ups collect
+addresses for a separate mailing workflow.
 
-After deployment, submit one enquiry, newsletter request and free event registration and
-confirm they appear in the Formspree dashboard and the configured notification inbox.
+After deployment, submit one labelled test for each public form. Check that each entry appears
+in Pentreeform and that its notification reaches the configured inbox.
