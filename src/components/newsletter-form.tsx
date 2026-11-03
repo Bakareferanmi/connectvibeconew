@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { subscribeNewsletter } from "@/lib/forms";
+import { sendToPentreeform } from "@/lib/pentreeform";
 
 export function NewsletterForm() {
   const [email, setEmail] = useState("");
@@ -16,9 +17,13 @@ export function NewsletterForm() {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (busy) return;
+    if (company) { setDone(true); return; }
     setBusy(true);
     try {
-      await subscribeNewsletter({ data: { email, company } });
+      await sendToPentreeform({ form_type: "newsletter", subject: "New newsletter sign-up", email });
+      // Pentreeform already saved the submission; keep the optional local copy best-effort.
+      try { await subscribeNewsletter({ data: { email, company } }); }
+      catch (err) { console.error("Could not save local newsletter copy:", err); }
       setDone(true);
       setEmail("");
       toast.success("You’re on the list. Thank you.");

@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { contactPathways, type PathwayId } from "@/lib/site-data";
 import { submitContact } from "@/lib/forms";
+import { sendToPentreeform } from "@/lib/pentreeform";
 import { cn } from "@/lib/utils";
 
 export function ContactForm({ initialIntent }: { initialIntent?: string }) {
@@ -37,10 +38,17 @@ export function ContactForm({ initialIntent }: { initialIntent?: string }) {
       toast.error("Please add your name, email and a short message.");
       return;
     }
+    if (website) {
+      setError("Please leave the website field empty and try again.");
+      return;
+    }
     setBusy(true);
     setError("");
     try {
-      await submitContact({ data: { pathway, name, email, organisation, message, website } });
+      await sendToPentreeform({ form_type: "contact", subject: `New ${pathway} enquiry`, pathway, name, email, organisation, message });
+      // Pentreeform already saved the message; the optional local copy must not trigger a false failure.
+      try { await submitContact({ data: { pathway, name, email, organisation, message, website } }); }
+      catch (err) { console.error("Could not save local contact copy:", err); }
       setSent(true);
       setName("");
       setEmail("");
